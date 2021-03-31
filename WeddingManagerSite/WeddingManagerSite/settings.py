@@ -20,7 +20,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-def load_secret_key():
+def gen_secret_key_fp():
+	"""
+	Generates the file path for the secret key file.
+
+	Returns:
+		str: The file path.
+	"""
+
+	return os.path.join(BASE_DIR, "Hidden", "SECRET_KEY.txt")
+
+def load_secret_key(fp):
 	"""
 	Loads the secret key from it's file into memory.
 
@@ -28,13 +38,23 @@ def load_secret_key():
 		str: Secret key string.
 	"""
 
-	with open(os.path.join(BASE_DIR, "Hidden", "SECRET_KEY.txt"), 'r') as secret_key_f:
+	with open(fp, 'r') as secret_key_f:
 		return secret_key_f.read().strip()
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = load_secret_key()
+SECRET_KEY = load_secret_key(gen_secret_key_fp())
 
-def load_env_vars():
+def gen_env_vars_fp():
+	"""
+	Generates the file path to the environment variables.
+
+	Returns:
+		str: File path.
+	"""
+
+	return os.path.join(BASE_DIR, "Hidden", "ENVIRONMENT_VARIABLES.json")
+
+def load_env_vars(fp):
 	"""
 	Loads the environment variables into a dictionary.
 
@@ -42,10 +62,10 @@ def load_env_vars():
 		dict: A dictionary containing environment variables as key-value pairs.
 	"""
 
-	with open(os.path.join(BASE_DIR, "Hidden", "ENVIRONMENT_VARIABLES.json"), 'r') as env_var_f:
+	with open(fp, 'r') as env_var_f:
 		return json.load(env_var_f)
 
-ENVIRONMENT_VARIABLES = load_env_vars()
+ENVIRONMENT_VARIABLES = load_env_vars(gen_env_vars_fp())
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ENVIRONMENT_VARIABLES["debug"]
