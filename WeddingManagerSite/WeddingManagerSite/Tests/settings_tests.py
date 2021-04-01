@@ -15,7 +15,7 @@ class TestFileBasedFunctions(unittest.TestCase):
 		from WeddingManagerSite.WeddingManagerSite.settings import gen_env_vars_fp
 
 		fp = gen_env_vars_fp()
-		self.assertIs(fp, str)
+		self.assertIsInstance(fp, str)
 		self.assertGreater(len(fp), 0, "File path appears to be an empty string.")
 		self.assertTrue(path.exists(fp), "File path does not seem to exist.")
 
@@ -28,7 +28,7 @@ class TestFileBasedFunctions(unittest.TestCase):
 		from WeddingManagerSite.WeddingManagerSite.settings import gen_secret_key_fp
 
 		fp = gen_secret_key_fp()
-		self.assertIs(fp, str)
+		self.assertIsInstance(fp, str)
 		self.assertGreater(len(fp), 0, "File path appears to be an empty string.")
 		self.assertTrue(path.exists(fp), "File path does not seem to exist.")
 
@@ -42,7 +42,7 @@ class TestFileBasedFunctions(unittest.TestCase):
 
 		fp = gen_env_vars_fp()
 		env_vars = load_env_vars(fp)
-		self.assertIs(env_vars, dict)
+		self.assertIsInstance(env_vars, dict)
 
 	def test_secret_key_file(self):
 		"""
@@ -54,5 +54,5 @@ class TestFileBasedFunctions(unittest.TestCase):
 
 		fp = gen_secret_key_fp()
 		secret_key = load_secret_key(fp)
-		self.assertIs(secret_key, str)
+		self.assertIsInstance(secret_key, str)
 	
