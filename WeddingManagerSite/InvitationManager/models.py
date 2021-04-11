@@ -31,6 +31,9 @@ class Guest_Relation(models.Model):
 	relation_mk = models.CharField(max_length=32, null=False)
 	relation_it = models.CharField(max_length=32, null=False)
 
+	def __str__(self):
+		return self.relation_en
+
 class Invitation_Email(models.Model):
 	email_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	to_field = models.CharField(max_length=128, null=False)
@@ -39,6 +42,9 @@ class Invitation_Email(models.Model):
 	from_field = models.CharField(max_length=128, null=False)
 	subject_field = models.CharField(max_length=256, null=False)
 	body_field = models.TextField(null=False)
+
+	def __str__(self):
+		return self.email_id
 
 class Invitation(models.Model):
 	# Uniquely identifies each row
@@ -55,9 +61,15 @@ class Invitation(models.Model):
 	seen_date = models.DateTimeField(null=True)
 	email_id = models.ForeignKey(Invitation_Email, null=True, on_delete=models.SET_NULL)
 
+	def __str__(self):
+		return self.invitation_id
+
 class Group(models.Model):
 	group_label = models.CharField(primary_key=True, max_length=64, null=False, unique=True)
 	primary_contact = models.ForeignKey("Guest", null=True, on_delete=models.SET_NULL)
+
+	def __str__(self):
+		return self.group_label
 
 class Guest(models.Model):
 	guest_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -74,3 +86,5 @@ class Guest(models.Model):
 	invitation_id = models.ForeignKey(Invitation, null=True, on_delete=models.SET_NULL)
 	is_attending = models.BooleanField(null=True, default=None)
 
+	def __str__(self):
+		return self.first_name + " " + self.last_name
