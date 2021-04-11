@@ -5,7 +5,6 @@ CREATE TABLE Group(
 	group_label VARCHAR(64) UNIQUE NOT NULL,
 	/*The primary contact for the group*/
 	primary_contact VARCHAR(32),
-	FOREIGN KEY (invitation_id) REFERENCES Invitation(invitation_id),
 	FOREIGN KEY (primary_contact) REFERENCES Guest(guest_id)
 );
 
@@ -25,7 +24,9 @@ CREATE TABLE Guest(
 	group_id VARCHAR (32),
 	/*States whether this person is overseas*/
 	is_overseas BOOLEAN DEFAULT FALSE,
+	/*Invitation this guest is associated with.*/
 	invitation_id VARCHAR(32),
+	/*Determines if the user has responded yet. True = Yes, False = No, Null = No response.*/
 	is_attending BOOLEAN,
 	FOREIGN KEY (relation_en) REFERENCES Guest_Relation(relation_en),
 	FOREIGN KEY (group_id) REFERENCES Group(group_id),
