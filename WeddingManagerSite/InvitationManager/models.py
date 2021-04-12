@@ -59,10 +59,10 @@ class Invitation(models.Model):
 	invitation_seen = models.BooleanField(default=False)
 	# The most recent date the link has been clicked
 	seen_date = models.DateTimeField(null=True)
-	email_id = models.ForeignKey(Invitation_Email, null=True, on_delete=models.SET_NULL)
+	assoc_email = models.ForeignKey(Invitation_Email, null=True, on_delete=models.SET_NULL)
 
 	def __str__(self):
-		return self.invitation_id
+		return self.invitation_url_id
 
 class Group(models.Model):
 	group_label = models.CharField(primary_key=True, max_length=64, null=False, unique=True)
@@ -81,9 +81,9 @@ class Guest(models.Model):
 	phone_number = models.CharField(max_length=16, null=True)
 	email = models.CharField(max_length=64, null=True)
 	fb_link = models.CharField(max_length=256, null=True)
-	group_id = models.ForeignKey(Group, null=True, on_delete=models.SET_NULL)
+	assoc_group = models.ForeignKey(Group, null=True, on_delete=models.SET_NULL)
 	is_overseas = models.BooleanField(default=False)
-	invitation_id = models.ForeignKey(Invitation, null=True, on_delete=models.SET_NULL)
+	assoc_invitation = models.ForeignKey(Invitation, null=True, on_delete=models.SET_NULL)
 	is_attending = models.BooleanField(null=True, default=None)
 
 	def __str__(self):
