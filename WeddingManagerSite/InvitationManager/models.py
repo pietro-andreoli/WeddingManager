@@ -88,3 +88,6 @@ class Guest(models.Model):
 
 	def __str__(self):
 		return self.first_name + " " + self.last_name
+	
+	def has_seen_invitation(self):
+		return self.assoc_invitation.invitation_seen

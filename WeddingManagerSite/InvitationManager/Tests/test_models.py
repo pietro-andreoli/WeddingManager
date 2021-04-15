@@ -18,8 +18,17 @@ class GuestTestCases(TestCase):
 		"is_attending":None
 	}
 
+	TEST_INVITATION_1 = {
+		"invitation_url_id": "12345abc",
+		"invitation_sent": True,
+		"send_date": "2022-09-12 12:00:00",
+		"invitation_seen": False,
+		"seen_date": None
+	}
+
 	def setUp(self):
-		models.Guest.objects.create(**self.TEST_GUEST_1)
+		inv = models.Invitation.objects.create(**self.TEST_INVITATION_1)
+		models.Guest.objects.create(**self.TEST_GUEST_1, assoc_invitation=inv)
 
 	def test_to_str(self):
 		guest = models.Guest.objects.get(
@@ -30,6 +39,14 @@ class GuestTestCases(TestCase):
 			str(guest),
 			self.TEST_GUEST_1["first_name"] + ' ' + self.TEST_GUEST_1["last_name"]
 		)
+	
+	def test_has_seen_from_guest(self):
+		guest = models.Guest.objects.get(
+			first_name=self.TEST_GUEST_1["first_name"],
+			last_name=self.TEST_GUEST_1["last_name"]
+		)
+		self.assertFalse(guest.has_seen_invitation())
+
 
 class GroupTestCases(TestCase):
 	TEST_GROUP_1 = {
@@ -56,7 +73,7 @@ class InvitationTestCases(TestCase):
 		"send_date": "2023-01-01 12:00:00",
 		"invitation_seen": False,
 		"seen_date": "2023-02-02 15:23:00",
-		"email_id": None
+		"assoc_email": None
 	}
 
 	def setUp(self):
