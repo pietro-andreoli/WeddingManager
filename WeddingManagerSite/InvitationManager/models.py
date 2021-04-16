@@ -1,31 +1,6 @@
 from django.db import models
 import uuid
 
-# CREATE TABLE Guest(
-# 	/*Unique Identifier*/
-# 	guest_id VARCHAR(32) PRIMARY KEY,
-# 	first_name VARCHAR(16) NOT NULL,
-# 	last_name VARCHAR(32) NOT NULL,
-# 	/*Relationship*/
-# 	relation_en VARCHAR(32),
-# 	whose_guest VARCHAR(8) NOT NULL,
-# 	home_address VARCHAR(128),
-# 	phone_number VARCHAR(16),
-# 	email VARCHAR(64),
-# 	fb_link VARCHAR(256),
-# 	/*If invited_as_group is TRUE, this is a reference to the group theyre a part of.*/
-# 	group_id VARCHAR (32),
-# 	/*States whether this person is overseas*/
-# 	is_overseas BOOLEAN DEFAULT FALSE,
-# 	/*Invitation this guest is associated with.*/
-# 	invitation_id VARCHAR(32),
-# 	/*Determines if the user has responded yet. True = Yes, False = No, Null = No response.*/
-# 	is_attending BOOLEAN,
-# 	FOREIGN KEY (relation_en) REFERENCES Guest_Relation(relation_en),
-# 	FOREIGN KEY (group_id) REFERENCES Group(group_id),
-# 	FOREIGN KEY (invitation_id) REFERENCES Invitation(invitation_id)
-# );
-
 class Guest_Relation(models.Model):
 	relation_en = models.CharField(max_length=32, primary_key=True)
 	relation_mk = models.CharField(max_length=32, null=False)
@@ -66,7 +41,7 @@ class Invitation(models.Model):
 
 class Group(models.Model):
 	group_label = models.CharField(primary_key=True, max_length=64, null=False, unique=True)
-	primary_contact = models.ForeignKey("Guest", null=True, on_delete=models.SET_NULL)
+	primary_contact = models.ForeignKey("Guest", null=True, on_delete=models.SET_NULL, blank=True)
 
 	def __str__(self):
 		return self.group_label
@@ -80,10 +55,10 @@ class Guest(models.Model):
 	home_address = models.CharField(max_length=128, null=True)
 	phone_number = models.CharField(max_length=16, null=True)
 	email = models.CharField(max_length=64, null=True)
-	fb_link = models.CharField(max_length=256, null=True)
+	fb_link = models.CharField(max_length=256, null=True, blank=True)
 	assoc_group = models.ForeignKey(Group, null=True, on_delete=models.SET_NULL)
 	is_overseas = models.BooleanField(default=False)
-	assoc_invitation = models.ForeignKey(Invitation, null=True, on_delete=models.SET_NULL)
+	assoc_invitation = models.ForeignKey(Invitation, null=True, on_delete=models.SET_NULL, blank=True)
 	is_attending = models.BooleanField(null=True, default=None)
 
 	def __str__(self):

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from InvitationManager import models
+from . import models
 
 class GuestTestCases(TestCase):
 	"""
@@ -39,7 +39,7 @@ class GuestTestCases(TestCase):
 			str(guest),
 			self.TEST_GUEST_1["first_name"] + ' ' + self.TEST_GUEST_1["last_name"]
 		)
-	
+
 	def test_has_seen_from_guest(self):
 		guest = models.Guest.objects.get(
 			first_name=self.TEST_GUEST_1["first_name"],

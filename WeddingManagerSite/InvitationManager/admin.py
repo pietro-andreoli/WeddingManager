@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Guest, Group, Invitation, Guest_Relation
+
+admin.site.register(Guest)
+admin.site.register(Group)
+admin.site.register(Invitation)
+admin.site.register(Guest_Relation)
