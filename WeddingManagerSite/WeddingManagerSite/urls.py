@@ -17,6 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-	path("yourinvitation/", include("InvitationManager.urls")),
+	path("invitations/", include("InvitationManager.urls")),
 	path('admin/', admin.site.urls),
 ]

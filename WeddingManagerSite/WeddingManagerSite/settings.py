@@ -100,7 +100,9 @@ ROOT_URLCONF = 'WeddingManagerSite.urls'
 TEMPLATES = [
 	{
 		'BACKEND': 'django.template.backends.django.DjangoTemplates',
-		'DIRS': [],
+		'DIRS': [
+			os.path.join(BASE_DIR, "InvitationManager/templates/InvitationManager")
+		],
 		'APP_DIRS': True,
 		'OPTIONS': {
 			'context_processors': [

@@ -1,0 +1,10 @@
+
+{% block title %}Guest Import{% endblock title %}
+{% block content %}
+<form action="/invitations/import/" method="post" enctype="multipart/form-data">{% csrf_token %}
+	<label for="file_upload">Upload File</label>
+	<input id="file_upload" type="file" name="file_upload">
+	<br>
+	<input type="submit">
+</form>
+{% endblock content %}
