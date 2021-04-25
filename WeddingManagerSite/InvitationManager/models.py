@@ -48,10 +48,16 @@ class Group(models.Model):
 		return self.group_label
 
 class Guest(models.Model):
-	WHOSE_GUEST_OPTIONS = [
-		("peter", "Peter's"),
-		("tea", "Teodora's")
-	]
+	# The options for the field whose_guest.
+	# It is stored as a dict for easy identification, converted to list for WHOSE_GUEST_OPTIONS constant.
+	# The key is for accessing from other parts of the app.
+	# Tuple's 0th value is what will be stored in the database. Tuples 1st value is a label for readability.
+	WHOSE_GUEST_OPTION_DICT = {
+		"PETER": ("peter", "Peter's"),
+		"TEA": ("tea", "Teodora's")
+	}
+	WHOSE_GUEST_OPTIONS = list(WHOSE_GUEST_OPTION_DICT.values())
+
 	guest_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	first_name = models.CharField(max_length=16)
 	last_name = models.CharField(max_length=32)
