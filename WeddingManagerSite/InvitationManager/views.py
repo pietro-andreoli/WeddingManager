@@ -72,8 +72,6 @@ def guest_import_page(request):
 		for row in csv_reader:
 			logger.debug(row)
 
-
-
 	if request.method == "POST":
 		form = ImportGuestsForm(request, request.FILES)
 		if form.is_valid():
