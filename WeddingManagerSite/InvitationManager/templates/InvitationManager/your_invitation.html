@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	{% block title %}<title>You're Invited</title>{% endblock %}
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+	<!-- Add additional CSS in static file -->
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+</head>
+
+<body class="bg-dark text-light">
+	
+	<div class="d-flex flex-column h-100">
+
+		<div class="d-flex flex-column align-items-center mb-4">
+			<h1 class="mb-4">P | T</h1>
+			<h3>{{ wedding_date }}</h3>
+			<h3>{{ wedding_time }}</h3>
+			<h3>{{ venue_name }}</h3>
+			<h3>{{ venue_address }}</h3>
+		</div>
+		<h3 class="d-flex justify-content-center mb-3">Reply by {{ reply_by_date }}</h3>
+
+		<div class="d-flex flex-column align-items-center px-4 mb-4">
+			<h4 class="text-center">{{ group_name }} is formally invited to the wedding of Teodora and Pietro</h4>
+			{% for guest in invitation_guests %}
+				<p>{{ guest }}</p>
+			{% endfor %}
+		</div>
+
+		<div class="d-flex flex-column align-items-center">
+			<button type="button" class="btn btn-light btn-lg mb-4">Fill My Invitation</button>
+			<button type="button" class="btn btn-danger" style="font-size: smaller;">We Regretfully Will Not Be Attending</button>
+		</div>
+		<!-- <button type="button" class="btn material-icons rounded-circle float-right" style="color:orangered">live_help</button> -->
+
+	</div>
+
+</body>
+
+</html>
