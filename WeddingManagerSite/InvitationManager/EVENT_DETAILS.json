@@ -1,0 +1,10 @@
+{
+	"event_date": {
+		"t_stamp": "2023-01-01 12:00:00",
+		"tz": "America/Toronto"
+	},
+	"venue": {
+		"address": "1234 Venueaddr Rd, County, PV 1A1 A1A",
+		"name": "The Wedding Venue"
+	}
+}

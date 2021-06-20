@@ -26,7 +26,7 @@ class Invitation(models.Model):
 	invitation_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	invitation_name = models.CharField(unique=True, max_length=128, default="NO NAME SET")
 	# Name of the invitation that can be displayed to users. Ex: "Guido Family"
-	invitation_public_name = models.CharField(unique=True, max_length=128, default="Guest Group")
+	# invitation_public_name = models.CharField(max_length=128, default="Guest Group")
 	# The ID used in the URL in the invitation email
 	invitation_url_id = models.CharField(max_length=36, null=False, unique=True, blank=True, default=uuid.uuid4)
 	# States whether the invitation has been sent already
@@ -79,3 +79,6 @@ class Guest(models.Model):
 	
 	def has_seen_invitation(self):
 		return self.assoc_invitation.invitation_seen
+	
+	def get_full_name(self):
+		return self.first_name + ' ' + self.last_name

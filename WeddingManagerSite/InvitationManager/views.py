@@ -88,4 +88,18 @@ def guest_import_page(request):
 	return HttpResponseBadRequest()
 
 def invitation_endpoint(request, invitation_id):
-	return HttpResponse(f"Invitation Endpoint: {invitation_id}")
+	from .event_details import EventDetails
+	#https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Home_page
+	details = EventDetails()
+	temp_group = InvitationModels.Group.objects.get(group_label="Tea's Family")
+	guests = InvitationModels.Guest.objects.filter(assoc_group=temp_group)
+
+	invitation_context = {
+		"wedding_date": details.event_start_timestamp.strftime("%b %d, %Y"),
+		"wedding_time": details.event_start_timestamp.strftime("%I:%M:%S %p %Z"),
+		"venue_name": details.venue_name,
+		"venue_address": details.venue_address,
+		"group_name": temp_group.group_label,
+		"invitation_guests": [guest.get_full_name() for guest in guests]
+	}
+	return render(request, "InvitationManager/your_invitation.html", context=invitation_context)
