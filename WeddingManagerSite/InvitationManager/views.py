@@ -1,15 +1,16 @@
-from django import http
-from django.http.request import HttpRequest
+import csv
+import logging
+
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.http.response import HttpResponseBadRequest, HttpResponseServerError
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
 from django.views.generic import View
-from .forms import ImportGuestsForm
-from django.contrib.auth.decorators import login_required
-import logging
-import csv
+
 from . import models as InvitationModels
-from django.forms.models import model_to_dict
+from .forms import ImportGuestsForm
+
+
 def index(request):
 	return HttpResponse("Hello world! Welcome to the InvitationManager app!")
 
