@@ -35,6 +35,7 @@ class EventDetails():
 		self.event_start_timestamp = datetime_from_str(start_timestamp_str, tz_str)
 		self.venue_name = contents["venue"]["name"]
 		self.venue_address = contents["venue"]["address"]
+		self.reply_deadline = datetime_from_str(contents["reply_deadline"], tz_str)
 	
 	@property
 	def event_time(self):

@@ -1,6 +1,7 @@
 from django import http
+from django.http.request import HttpRequest
 from django.http.response import HttpResponseBadRequest, HttpResponseServerError
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from .forms import ImportGuestsForm
 from django.contrib.auth.decorators import login_required
@@ -89,17 +90,50 @@ def guest_import_page(request):
 
 def invitation_endpoint(request, invitation_id):
 	from .event_details import EventDetails
-	#https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Home_page
-	details = EventDetails()
-	temp_group = InvitationModels.Group.objects.get(group_label="Tea's Family")
-	guests = InvitationModels.Guest.objects.filter(assoc_group=temp_group)
+	
+	class InvitationEndpointOptions():
+		FILL_INVITATION = 0
+		REJECT_INVITATION = 1
 
-	invitation_context = {
-		"wedding_date": details.event_start_timestamp.strftime("%b %d, %Y"),
-		"wedding_time": details.event_start_timestamp.strftime("%I:%M:%S %p %Z"),
-		"venue_name": details.venue_name,
-		"venue_address": details.venue_address,
-		"group_name": temp_group.group_label,
-		"invitation_guests": [guest.get_full_name() for guest in guests]
-	}
-	return render(request, "InvitationManager/your_invitation.html", context=invitation_context)
+		@staticmethod
+		def as_str(option_code):
+			if option_code == InvitationEndpointOptions.FILL_INVITATION:
+				return "FILL_INVITATION"
+			elif option_code == InvitationEndpointOptions.REJECT_INVITATION:
+				return "REJECT_INVITATION"
+			raise ValueError("Invitation option code not recognized.")
+
+	invitation = get_object_or_404(InvitationModels.Invitation, invitation_url_id=invitation_id)
+	print("Hello")
+	if request.method == "POST":
+		# The variable containing a response ID regarding which button was pressed on the home page.
+		# See InvitationEndpointOptions for potential values.
+		selected_response = None
+		if "fill_inv" in request.POST:
+			selected_response = InvitationEndpointOptions.FILL_INVITATION
+		elif "reject_inv" in request.POST:
+			selected_response = InvitationEndpointOptions.REJECT_INVITATION
+		else:
+			return HttpResponseBadRequest()
+		print(InvitationEndpointOptions.as_str(selected_response))
+		return render(request, "InvitationManager/fill_invitation.html")
+	else:
+		#https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Home_page
+		details = EventDetails()
+		guests = InvitationModels.Guest.objects.filter(assoc_invitation=invitation)
+		
+		# temp_group = InvitationModels.Group.objects.get(group_label="Tea's Family")
+		# guests = InvitationModels.Guest.objects.filter(assoc_group=temp_group)
+
+		invitation_context = {
+			"wedding_date": details.event_start_timestamp.strftime("%b %d, %Y"),
+			"wedding_time": details.event_start_timestamp.strftime("%I:%M:%S %p %Z"),
+			"venue_name": details.venue_name,
+			"venue_address": details.venue_address,
+			"group_name": invitation.invitation_name,
+			"invitation_guests": [guest.get_full_name() for guest in guests],
+			"reply_deadline": details.reply_deadline.strftime("%Y-%m-%d %I:%M:%S %p %Z"),
+			"invitation_url_id": invitation_id
+		}
+		return render(request, "InvitationManager/your_invitation.html", context=invitation_context)
+	

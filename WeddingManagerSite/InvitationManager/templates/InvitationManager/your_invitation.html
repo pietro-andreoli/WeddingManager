@@ -15,7 +15,6 @@
 	<!-- Add additional CSS in static file -->
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
-
 </head>
 
 <body class="bg-dark text-light">
@@ -29,7 +28,7 @@
 			<h3>{{ venue_name }}</h3>
 			<h3>{{ venue_address }}</h3>
 		</div>
-		<h3 class="d-flex justify-content-center mb-3">Reply by {{ reply_by_date }}</h3>
+		<h3 class="d-flex justify-content-center mb-3">Reply by {{ reply_deadline }}</h3>
 
 		<div class="d-flex flex-column align-items-center px-4 mb-4">
 			<h4 class="text-center">{{ group_name }} is formally invited to the wedding of Teodora and Pietro</h4>
@@ -39,8 +38,11 @@
 		</div>
 
 		<div class="d-flex flex-column align-items-center">
-			<button type="button" class="btn btn-light btn-lg mb-4">Fill My Invitation</button>
-			<button type="button" class="btn btn-danger" style="font-size: smaller;">We Regretfully Will Not Be Attending</button>
+			<form action="{% url 'InvitationManager:invitation_endpoint' invitation_url_id %}" method="post">
+			{% csrf_token %}
+				<input type="submit" class="btn btn-light btn-lg mb-4" name="fill_inv" id="choice1" value="Fill My Invitation">
+				<input type="submit" class="btn btn-danger" style="font-size: smaller;" name="reject_inv" id="choice2" value="We Regretfully Will Not Be Attending">
+			</form>
 		</div>
 		<!-- <button type="button" class="btn material-icons rounded-circle float-right" style="color:orangered">live_help</button> -->
 
