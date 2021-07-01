@@ -3,6 +3,7 @@ from django.http.request import HttpRequest
 from django.http.response import HttpResponseBadRequest, HttpResponseServerError
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
+from django.views.generic import View
 from .forms import ImportGuestsForm
 from django.contrib.auth.decorators import login_required
 import logging
@@ -88,36 +89,22 @@ def guest_import_page(request):
 
 	return HttpResponseBadRequest()
 
-def invitation_endpoint(request, invitation_id):
-	from .event_details import EventDetails
-	
-	class InvitationEndpointOptions():
+class InvitationHomepage(View):
+	class HomepageButtonOptions():
 		FILL_INVITATION = 0
 		REJECT_INVITATION = 1
 
 		@staticmethod
 		def as_str(option_code):
-			if option_code == InvitationEndpointOptions.FILL_INVITATION:
+			if option_code == InvitationHomepage.HomepageButtonOptions.FILL_INVITATION:
 				return "FILL_INVITATION"
-			elif option_code == InvitationEndpointOptions.REJECT_INVITATION:
+			elif option_code == InvitationHomepage.HomepageButtonOptions.REJECT_INVITATION:
 				return "REJECT_INVITATION"
 			raise ValueError("Invitation option code not recognized.")
 
-	invitation = get_object_or_404(InvitationModels.Invitation, invitation_url_id=invitation_id)
-	print("Hello")
-	if request.method == "POST":
-		# The variable containing a response ID regarding which button was pressed on the home page.
-		# See InvitationEndpointOptions for potential values.
-		selected_response = None
-		if "fill_inv" in request.POST:
-			selected_response = InvitationEndpointOptions.FILL_INVITATION
-		elif "reject_inv" in request.POST:
-			selected_response = InvitationEndpointOptions.REJECT_INVITATION
-		else:
-			return HttpResponseBadRequest()
-		print(InvitationEndpointOptions.as_str(selected_response))
-		return render(request, "InvitationManager/fill_invitation.html")
-	else:
+	def get(self, request, invitation_id, *args, **kwargs):
+		from .event_details import EventDetails
+		invitation = get_object_or_404(InvitationModels.Invitation, invitation_url_id=invitation_id)
 		#https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Home_page
 		details = EventDetails()
 		guests = InvitationModels.Guest.objects.filter(assoc_invitation=invitation)
@@ -137,3 +124,18 @@ def invitation_endpoint(request, invitation_id):
 		}
 		return render(request, "InvitationManager/your_invitation.html", context=invitation_context)
 	
+	def post(self, request, invitation_id, *args, **kwargs):
+		from .event_details import EventDetails
+		invitation = get_object_or_404(InvitationModels.Invitation, invitation_url_id=invitation_id)
+		# The variable containing a response ID regarding which button was pressed on the home page.
+		# See InvitationEndpointOptions for potential values.
+		selected_response = None
+		if "fill_inv" in request.POST:
+			selected_response = InvitationHomepage.HomepageButtonOptions.FILL_INVITATION
+		elif "reject_inv" in request.POST:
+			selected_response =  InvitationHomepage.HomepageButtonOptions.REJECT_INVITATION
+		else:
+			return HttpResponseBadRequest()
+		print(InvitationHomepage.HomepageButtonOptions.as_str(selected_response))
+		return render(request, "InvitationManager/fill_invitation.html")
+
