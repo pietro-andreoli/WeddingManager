@@ -2,17 +2,24 @@ import csv
 import logging
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http.response import HttpResponseBadRequest, HttpResponseServerError
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import View
+from django.core import exceptions as django_exceptions
+
 
 from . import models as InvitationModels
 from .forms import ImportGuestsForm
 
-
 def index(request):
 	return HttpResponse("Hello world! Welcome to the InvitationManager app!")
+
+def help_page(request):
+	return render(request, "InvitationManager/help.html")
+
+def missing_invitation(request):
+	return  render(request, "InvitationManager/missing_invitation.html")
 
 @login_required
 def guest_import_page(request):
@@ -92,11 +99,27 @@ def guest_import_page(request):
 
 class InvitationHomepage(View):
 	class HomepageButtonOptions():
+		"""
+		An enum class that represents the possible options a user can choose on the invitation homepage.
+		"""
 		FILL_INVITATION = 0
 		REJECT_INVITATION = 1
 
 		@staticmethod
 		def as_str(option_code):
+			"""
+			Returns the string version of the code used. Useful for logging.
+
+			Args:
+				option_code (int): An integer option in the HomepageButtonOptions class.
+
+			Raises:
+				ValueError: Raised if an option code is inputted that does not exist.
+
+			Returns:
+				str: String version of code.
+			"""
+
 			if option_code == InvitationHomepage.HomepageButtonOptions.FILL_INVITATION:
 				return "FILL_INVITATION"
 			elif option_code == InvitationHomepage.HomepageButtonOptions.REJECT_INVITATION:
@@ -105,7 +128,12 @@ class InvitationHomepage(View):
 
 	def get(self, request, invitation_id, *args, **kwargs):
 		from .event_details import EventDetails
-		invitation = get_object_or_404(InvitationModels.Invitation, invitation_url_id=invitation_id)
+		# TODO: If not invitation is found for this ID, consider redirecting to a page with instructions on how to get your invitation URL.
+		invitation = None
+		try:
+			invitation = self.get_invitation_by_url_id(invitation_id)
+		except django_exceptions.ObjectDoesNotExist as no_inv_found_err:
+			return missing_invitation(request)
 		#https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Home_page
 		details = EventDetails()
 		guests = InvitationModels.Guest.objects.filter(assoc_invitation=invitation)
@@ -127,7 +155,12 @@ class InvitationHomepage(View):
 	
 	def post(self, request, invitation_id, *args, **kwargs):
 		from .event_details import EventDetails
-		invitation = get_object_or_404(InvitationModels.Invitation, invitation_url_id=invitation_id)
+		# TODO: If not invitation is found for this ID, consider redirecting to a page with instructions on how to get your invitation URL.
+		invitation = None
+		try:
+			invitation = self.get_invitation_by_url_id(invitation_id)
+		except django_exceptions.ObjectDoesNotExist as no_inv_found_err:
+			return render(request, "InvitationManager/missing_invitation.html")
 		# The variable containing a response ID regarding which button was pressed on the home page.
 		# See InvitationEndpointOptions for potential values.
 		selected_response = None
@@ -136,7 +169,35 @@ class InvitationHomepage(View):
 		elif "reject_inv" in request.POST:
 			selected_response =  InvitationHomepage.HomepageButtonOptions.REJECT_INVITATION
 		else:
-			return HttpResponseBadRequest()
+			# Redirect to the GET version of this page, as the payload seems to be missing required headers.
+			return self.get(request, invitation_id, args, kwargs)
 		print(InvitationHomepage.HomepageButtonOptions.as_str(selected_response))
 		return render(request, "InvitationManager/fill_invitation.html")
 
+	def get_invitation_by_url_id(self, url_id):
+		"""
+		Gets the Invitation object associated with this URL ID.
+		If there is no Invitation associated with this URL, raises ObjectDoesNotExist exception.
+
+		Args:
+			url_id (str): URL ID of the invitation. Should come from InvitationModels.Invitation.invitation_url_id.
+
+		Raises:
+			django_exceptions.ObjectDoesNotExist: Raised if no Invitation was found for this URL ID.
+
+		Returns:
+			InvitationModels.Invitation: The invitation associated with this URL ID.
+		"""
+
+		try:
+			invitation = InvitationModels.Invitation.objects.get(invitation_url_id=url_id)
+			if invitation is None:
+				raise django_exceptions.ObjectDoesNotExist()
+			return invitation
+		# This is raised when the url_id does not match a single invitation.
+		except django_exceptions.ObjectDoesNotExist as no_inv_error:
+			print("Invitation could not be found!")
+			#TODO: Add logging here
+			raise no_inv_error
+		except Exception as err:
+			print(str(err))
