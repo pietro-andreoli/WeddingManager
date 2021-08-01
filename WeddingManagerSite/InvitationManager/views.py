@@ -128,7 +128,6 @@ class InvitationHomepage(View):
 
 	def get(self, request, invitation_id, *args, **kwargs):
 		from .event_details import EventDetails
-		# TODO: If not invitation is found for this ID, consider redirecting to a page with instructions on how to get your invitation URL.
 		invitation = None
 		try:
 			invitation = self.get_invitation_by_url_id(invitation_id)
@@ -155,7 +154,6 @@ class InvitationHomepage(View):
 	
 	def post(self, request, invitation_id, *args, **kwargs):
 		from .event_details import EventDetails
-		# TODO: If not invitation is found for this ID, consider redirecting to a page with instructions on how to get your invitation URL.
 		invitation = None
 		try:
 			invitation = self.get_invitation_by_url_id(invitation_id)
