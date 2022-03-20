@@ -1,16 +1,20 @@
 import csv
 import logging
+from urllib.error import HTTPError
+from xmlrpc.client import SERVER_ERROR
 
 from django.contrib.auth.decorators import login_required
+from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http.response import HttpResponseBadRequest, HttpResponseServerError
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import View
 from django.core import exceptions as django_exceptions
+from .forms import RSVPSubform
 
 
 from . import models as InvitationModels
-from .forms import ImportGuestsForm
+from .forms import ImportGuestsForm, RSVPSubform
 
 def index(request):
 	return HttpResponse("Hello world! Welcome to the InvitationManager app!")
@@ -170,7 +174,7 @@ class InvitationHomepage(View):
 			# Redirect to the GET version of this page, as the payload seems to be missing required headers.
 			return self.get(request, invitation_id, args, kwargs)
 		print(InvitationHomepage.HomepageButtonOptions.as_str(selected_response))
-		return render(request, "InvitationManager/fill_invitation.html")
+		return render(request, "InvitationManager/fill_invitation.html", context=None)
 
 	def get_invitation_by_url_id(self, url_id):
 		"""
@@ -199,3 +203,116 @@ class InvitationHomepage(View):
 			raise no_inv_error
 		except Exception as err:
 			print(str(err))
+
+class RSVPFormView(View):
+
+	FORM_TEMPLATE_PATH = "InvitationManager/fill_rsvp.html"
+
+	ATTENDING_RB_TAG_NAME = "is_attending"
+	IS_ATTENDING_RB_TAG_VALUE = "true"
+	IS_NOT_ATTENDING_RB_TAG_VALUE = "false"
+	IS_VEGAN_CB_TAG_NAME = "is_vegan"
+	IS_VEGAN_CB_TAG_VALUE = "true"
+	TAG_NAME_DELIMETER = "__"
+
+	def get(self, request, invitation_id, *args, **kwargs):
+		context = {}
+		print(request.GET)
+		# form = RSVPSubform(request)
+		inv = self.get_assoc_invitation(invitation_id)
+		return self.render_form(request, inv)
+	
+	def post(self, request, invitation_id, *args, **kwargs):
+
+		# Get the invitation object associated with the inputted ID
+		inv = InvitationModels.Invitation.get_invitation_by_url_id(invitation_id)
+
+		# Convert the forms response into a dictionary
+		form_response = dict(request.POST.lists())
+
+		def get_form_value(guest, key):
+			"""
+			Gets from the form_response dict based on inputted guest and key.
+			This is necessary because keys are in this format
+			<guest_id>__key
+
+			Args:
+				guest (Guest): Guest to search for.
+				key (str): Key string to search for.
+
+			Returns:
+				any: Value for inputted key, or None if it doesnt exist.
+			"""
+
+			form_key = str(guest.guest_id) + RSVPFormView.TAG_NAME_DELIMETER + key
+			if form_key in form_response:
+				return form_response[form_key][0]
+			return None
+
+		# list of form, guest pairs
+		form_list = []
+
+		# Loop through guests for this invitation
+		# Fill an individual RSVP form for each guest
+		# Add form and guest to form_list before saving
+		for guest in inv.get_all_guests():
+			# Get all models for this guest
+			rsvp_model_set = InvitationModels.RSVP.objects.filter(guest__guest_id=guest.guest_id)
+			rsvp_model = rsvp_model_set[0] if len(rsvp_model_set) > 0 else None
+			print (f"rsvp_model: {rsvp_model}")
+
+			# Get form input as dict
+			is_attending = get_form_value(guest, RSVPFormView.ATTENDING_RB_TAG_NAME)
+			guest_form_dict = {
+				"is_attending": bool(is_attending) if is_attending is not None else None,
+				"is_vegan": get_form_value(guest, RSVPFormView.IS_VEGAN_CB_TAG_NAME)
+			}
+
+			# Create form object using instance and form input
+			# If no RSVP has been created yet for a guest, instance is set to None, creating a new RSVP object
+			form = RSVPSubform(guest_form_dict, instance=rsvp_model)
+			if not form.is_valid():
+				raise Exception("Form is not valid")
+			form_list.append((form, guest))
+		
+		# loop through form and guest pairs, save both.
+		# We do this after so no changes are made if a single form is not valid (from prev loop)
+		for form, guest in form_list:
+			form.save()
+			guest.rsvp = form.instance
+			guest.save()
+		
+		# Render the form again.
+		return self.render_form(request, inv)
+
+	def get_assoc_invitation(self, invitation_id):
+		return InvitationModels.Invitation.objects.get(invitation_url_id=invitation_id)
+
+	def render_form(self, request, inv):
+		form = RSVPSubform(request.POST)
+		form.parent_invitation = inv
+		
+		context = {
+			"form": form,
+			"invitees": inv.get_all_guests(),
+			"ATTENDING_RB_TAG_NAME": RSVPFormView.ATTENDING_RB_TAG_NAME,
+			"IS_VEGAN_CB_TAG_NAME": RSVPFormView.IS_VEGAN_CB_TAG_NAME,
+			"IS_VEGAN_CB_TAG_VALUE": RSVPFormView.IS_VEGAN_CB_TAG_VALUE,
+			"IS_NOT_ATTENDING_RB_TAG_VALUE": RSVPFormView.IS_NOT_ATTENDING_RB_TAG_VALUE,
+			"IS_ATTENDING_RB_TAG_VALUE": RSVPFormView.IS_ATTENDING_RB_TAG_VALUE,
+			"TAG_NAME_DELIMETER": RSVPFormView.TAG_NAME_DELIMETER,
+		}
+		return render(request, RSVPFormView.FORM_TEMPLATE_PATH, context)
+
+class RSVP_Formset(View):
+	# An attempt at the formset class.
+	# See the UI_sketch.jpg file and
+	# https://engineertodeveloper.com/getting-started-with-formsets-create-a-recipe-app/
+	def get(self, request, invitation_id, *args, **kwargs):
+		context = {}
+		rsvp_form_set_class = formset_factory(RSVPSubform)
+		form_set = forms.inlineformset_factory(
+			InvitationModels.Invitation,
+			InvitationModels.Guest,
+			form=RSVPSubform
+		)

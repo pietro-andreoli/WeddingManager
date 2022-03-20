@@ -20,7 +20,7 @@ def datetime_from_str(date_str, tz_str):
 
 class EventDetails():
 	# Path to the event details file.
-	DETAILS_FP = os.path.join(settings.BASE_DIR, "InvitationManager", "EVENT_DETAILS.json")
+	DETAILS_FP = os.path.join(settings.BASE_DIR, "InvitationManager", "configs/event_details_config.json")
 	def __init__(self):
 		import json
 

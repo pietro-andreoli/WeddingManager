@@ -10,4 +10,5 @@ urlpatterns = [
 	path('yourinvitation/<str:invitation_id>', views.InvitationHomepage.as_view(), name='invitation_endpoint'),
 	path("import/", views.guest_import_page, name="db_import_endpoint"),
 	path("help/", views.help_page, name="help_endpoint"),
+	path("yourinvitation/rsvp/<str:invitation_id>", views.RSVPFormView.as_view(), name="test_endpoint"),
 ]

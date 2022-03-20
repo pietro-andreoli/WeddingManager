@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	{% block title %}<title>You're Invited</title>{% endblock %}
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+	<!-- Add additional CSS in static file -->
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+	<style type="text/css">
+	</style>
+
+</head>
+
+<body class="bg-dark text-light">
+	
+	Fill Invitation Page
+	
+	<form method="post">
+	{% csrf_token %}
+		<div class="form-group">
+			<table class="table table-hover ">
+				<thead>
+				  <tr>
+					<th scope="col">Name</th>
+					<th scope="col">Accepts</th>
+					<th scope="col">Declines</th>
+					<th scope="col">Vegan Option</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  {% for person in invitees %}
+				  <tr>
+					<td>{{ person.first_name }} {{ person.last_name }}</td>
+					<td><input class="form-check-input" type="radio" id="attending_rb" name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}" value="{{ IS_ATTENDING_RB_TAG_VALUE }}" required></td>
+					<td><input class="form-check-input" type="radio" id="not_attending_rb" name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}" value="{{ IS_NOT_ATTENDING_RB_TAG_VALUE }}" required></td>
+					<td><input class="form-check-input" type="checkbox" id="vegan_cb" name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ IS_VEGAN_CB_TAG_NAME }}" value="{{ IS_VEGAN_CB_TAG_VALUE }}"></td>
+				  </tr>
+				  {% endfor %}
+				 
+				</tbody>
+			  
+			  </table>
+		</div>
+
+		<input type="submit" class="btn btn-light btn-lg mb-4" name="fill_inv" id="choice1" value="Submit my RSVP">
+		{% comment %} <input type="submit" class="btn btn-danger" style="font-size: smaller;" name="reject_inv" id="choice2" value="We Regretfully Will Not Be Attending"> {% endcomment %}
+	</form>
+
+</body>
+
+</html>
