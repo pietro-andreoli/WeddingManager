@@ -38,11 +38,13 @@
 		</div>
 
 		<div class="d-flex flex-column align-items-center">
-			<form action="{% url 'InvitationManager:invitation_endpoint' invitation_url_id %}" method="post">
+			<button class="btn btn-light btn-lg mb-4"><a style="color: black; text-decoration: none;" href="{% url 'InvitationManager:rsvp' invitation_url_id %}">Fill my Invitation</a></button>
+			
+			<!-- <form action="{% url 'InvitationManager:invitation_endpoint' invitation_url_id %}" method="post">
 			{% csrf_token %}
 				<input type="submit" class="btn btn-light btn-lg mb-4" name="fill_inv" id="choice1" value="Fill My Invitation">
 				<input type="submit" class="btn btn-danger" style="font-size: smaller;" name="reject_inv" id="choice2" value="We Regretfully Will Not Be Attending">
-			</form>
+			</form> -->
 		</div>
 		<!-- <button type="button" class="btn material-icons rounded-circle float-right" style="color:orangered">live_help</button> -->
 
