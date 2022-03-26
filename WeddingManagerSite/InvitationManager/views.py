@@ -303,16 +303,3 @@ class RSVPFormView(View):
 			"TAG_NAME_DELIMETER": RSVPFormView.TAG_NAME_DELIMETER,
 		}
 		return render(request, RSVPFormView.FORM_TEMPLATE_PATH, context)
-
-class RSVP_Formset(View):
-	# An attempt at the formset class.
-	# See the UI_sketch.jpg file and
-	# https://engineertodeveloper.com/getting-started-with-formsets-create-a-recipe-app/
-	def get(self, request, invitation_id, *args, **kwargs):
-		context = {}
-		rsvp_form_set_class = formset_factory(RSVPSubform)
-		form_set = forms.inlineformset_factory(
-			InvitationModels.Invitation,
-			InvitationModels.Guest,
-			form=RSVPSubform
-		)
