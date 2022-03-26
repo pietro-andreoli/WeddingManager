@@ -207,6 +207,7 @@ class InvitationHomepage(View):
 class RSVPFormView(View):
 
 	FORM_TEMPLATE_PATH = "InvitationManager/fill_rsvp.html"
+	RSVP_SUCCESS_TEMPLATE_PATH = "InvitationManager/rsvp_success.html"
 
 	ATTENDING_RB_TAG_NAME = "is_attending"
 	IS_ATTENDING_RB_TAG_VALUE = "true"
@@ -283,7 +284,7 @@ class RSVPFormView(View):
 			guest.save()
 		
 		# Render the form again.
-		return self.render_form(request, inv)
+		return self.render_post_rsvp(request, inv)
 
 	def get_assoc_invitation(self, invitation_id):
 		return InvitationModels.Invitation.objects.get(invitation_url_id=invitation_id)
@@ -303,3 +304,20 @@ class RSVPFormView(View):
 			"TAG_NAME_DELIMETER": RSVPFormView.TAG_NAME_DELIMETER,
 		}
 		return render(request, RSVPFormView.FORM_TEMPLATE_PATH, context)
+
+	def render_post_rsvp(self, request, inv):
+		"""
+		Renders the success page after the RSVP form has been submitted, or the failure page if the form is invalid.
+
+		Args:
+			request (Request): Incoming request object.
+			inv (models.Invitation): Invitation model object.
+
+		Returns:
+			HttpResponse: Render the approprate template.
+		"""
+
+		context = {
+			"invitation_url_id": inv.invitation_url_id
+		}
+		return render(request, RSVPFormView.RSVP_SUCCESS_TEMPLATE_PATH, context)
