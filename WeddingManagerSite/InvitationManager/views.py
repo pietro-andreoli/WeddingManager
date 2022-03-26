@@ -264,7 +264,7 @@ class RSVPFormView(View):
 			# Get form input as dict
 			is_attending = get_form_value(guest, RSVPFormView.ATTENDING_RB_TAG_NAME)
 			guest_form_dict = {
-				"is_attending": bool(is_attending) if is_attending is not None else None,
+				"is_attending": is_attending == RSVPFormView.IS_ATTENDING_RB_TAG_VALUE if is_attending is not None else None,
 				"is_vegan": get_form_value(guest, RSVPFormView.IS_VEGAN_CB_TAG_NAME)
 			}
 
