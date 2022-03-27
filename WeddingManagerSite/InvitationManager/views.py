@@ -217,9 +217,6 @@ class RSVPFormView(View):
 	TAG_NAME_DELIMETER = "__"
 
 	def get(self, request, invitation_id, *args, **kwargs):
-		context = {}
-		print(request.GET)
-		# form = RSVPSubform(request)
 		inv = self.get_assoc_invitation(invitation_id)
 		return self.render_form(request, inv)
 	
