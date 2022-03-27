@@ -1,6 +1,7 @@
 # This Project.
 
 WeddingManagerSite/Hidden
+*.sqlite3
 
 # vscode
 .vscode/
