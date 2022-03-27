@@ -15,6 +15,7 @@ def backup_db():
 		print('Backup complete!')
 	except sqlite3.Error as error:
 		print("Error while backing up database", error)
+		return False
 	finally:
 		if connection:
 			connection.close()
@@ -22,4 +23,5 @@ def backup_db():
 		if backupConnection:
 			backupConnection.close()
 			print("The backup SQLite connection is closed")
+	return True
 
