@@ -4,6 +4,7 @@ from .enums import DisplayStrings
 
 class ImportGuestsForm(forms.Form):
 	file_upload = forms.FileField(label="file_upload")
+	clear_db = forms.CheckboxInput()
 
 class RSVPForm(forms.ModelForm):
 
