@@ -2,6 +2,7 @@
 
 WeddingManagerSite/Hidden
 *.sqlite3
+WeddingManagerSite/*_backup.json
 
 # vscode
 .vscode/
