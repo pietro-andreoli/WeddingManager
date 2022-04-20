@@ -1,7 +1,10 @@
 
 {% block title %}Guest Import{% endblock title %}
 {% block content %}
-<form action="/invitations/import/" method="post" enctype="multipart/form-data">{% csrf_token %}
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+	<label for="clear_db">Clear existing guests before import?</label>
+	<input type="checkbox" name="clear_db" value="1" />
+	<br>
 	<label for="file_upload">Upload File</label>
 	<input id="file_upload" type="file" name="file_upload">
 	<br>
