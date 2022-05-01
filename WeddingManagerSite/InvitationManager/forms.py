@@ -3,8 +3,15 @@ from .models import Guest, Group, RSVP, Invitation
 from .enums import DisplayStrings
 
 class ImportGuestsForm(forms.Form):
+	CLEAR_DB_CHOICES = [
+		("True", "Clear DB"),
+		("False", "Keep DB")
+	]
 	file_upload = forms.FileField(label="file_upload")
-	clear_db = forms.CheckboxInput()
+	clear_db = forms.CharField(
+		label="Clear DB?",
+		widget=forms.RadioSelect(choices=CLEAR_DB_CHOICES)
+	)
 
 class RSVPForm(forms.ModelForm):
 
