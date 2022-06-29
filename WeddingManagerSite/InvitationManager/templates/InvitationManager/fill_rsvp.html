@@ -18,28 +18,6 @@
 	{% comment %}
 	<link rel="stylesheet" href="{% static 'css/styles.css' %}"> {% endcomment %}
 	<style type="text/css">
-		.invBody {
-			position: relative;
-			display: flex;
-			flex-direction: column;
-			margin: 0 auto;
-			max-width: 980px;
-			box-sizing: border-box;
-			padding: 100px 68px;
-		}
-
-		.invLeft {
-			width: 80%;
-		}
-
-		.invRight {
-			width: 50%;
-		}
-
-		.LRSeparator {
-			margin-right: 32px;
-		}
-
 		a,
 		abbr,
 		acronym,
@@ -116,6 +94,36 @@
 			background: transparent;
 		}
 
+		.formContainerStyle {
+			box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+			padding: 30px 68px;
+		}
+
+		.invBody {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			margin: 0 auto;
+			max-width: 980px;
+			box-sizing: border-box;
+			/* // Box shadow only on left and right */
+			width: 85%;
+		}
+
+		.invLeft {
+			width: 80%;
+		}
+
+		.invRight {
+			width: 100%;
+
+			max-width: 300px;
+		}
+
+		.LRSeparator {
+			margin-right: 32px;
+		}
+
 		div .invTitle {
 			justify-content: space-between;
 			display: flex;
@@ -137,7 +145,8 @@
 			overflow: visible;
 			white-space: normal;
 			word-wrap: break-word;
-			padding-left: 30px;
+			padding-left: 35px;
+
 		}
 
 		.personName {
@@ -149,150 +158,168 @@
 			white-space: normal;
 			word-wrap: break-word;
 		}
+
+		.weddingInfo {
+			color: rgb(255, 253, 252);
+			background-color: rgb(93, 76, 89);
+			border-width: 0px;
+			border-color: rgba(47, 46, 46, 0.2);
+			padding: 20px !important;
+			word-wrap: break-work;
+			box-sizing: border-box;
+		}
+
+		.formHeader {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			flex-wrap: wrap-reverse;
+		}
+
+		@media (max-width: 775px) {
+			.formHeaderContent {
+				flex-direction: column-reverse
+			}
+		}
 	</style>
 
 </head>
 
 <body>
+	<div style="display: flex; flex-direction: column;">
+				
+		<!-- https://www.wix.com/website-template/view/html/1868?siteId=fabb0d61-af67-4394-b4fe-53f292ed3cd3&metaSiteId=75297859-3cc7-47bb-b4f6-655eafdd40a7&originUrl=https%3A%2F%2Fwww.wix.com%2Fwebsite%2Ftemplates%2Fhtml%2Fevents%2Fweddings&tpClick=view_button -->
+		
+		<div class="invBody navBar">
+			
+			{% include "InvitationManager/nav_bar.html" %}
+		</div>
+		
+		<div class="invBody formContainerStyle">
+			<form method="post">
+				{% csrf_token %}
+				<div>
+					<div class="formHeader formHeaderContent">
 
-	Fill Invitation Page
-	<!-- https://www.wix.com/website-template/view/html/1868?siteId=fabb0d61-af67-4394-b4fe-53f292ed3cd3&metaSiteId=75297859-3cc7-47bb-b4f6-655eafdd40a7&originUrl=https%3A%2F%2Fwww.wix.com%2Fwebsite%2Ftemplates%2Fhtml%2Fevents%2Fweddings&tpClick=view_button -->
-	<form method="post">
-		{% csrf_token %}
-		<div class="invBody">
+						<div class="invTitle">
+							<div style="display: flex; align-self: flex-end;">
+								Your RSVP
+							</div>
+						</div>
+						<div style="min-height: 30px; flex-grow: 1;">
+							<!-- Separator -->
+						</div>
+						<div class="invRight">
+							<div class="weddingInfo">
+								<div style="display: flex; justify-content: space-between; align-items: center;">
+									<div style="width: 100%; flex-grow: 1;">
+										<div style="font: normal normal normal 30px/1.4em Garamond, serif;">
+											The Wedding
+										</div>
+										<div
+											style="height: 1px; margin: 20px 0; opacity: .1; background-color: rgb(255, 253, 252);">
+										</div>
+										<div
+											style="font: normal normal normal 15px/1.4em avenir-lt-w01_35-light1475496,avenir-lt-w05_35-light,sans-serif; font-size: 14px !important;">
+											<div>
+												{{ wedding_date }}, {{ wedding_time }}
+											</div>
+											<div>
+												{{ venue_name }}
+											</div>
+										</div>
 
-			<div class=".invRight">
-				Wedding data
-			</div>
-			<div class="">
-				<div class="invLeft">
-					<div>
-						<div style="outline: 0;">
-							<div style="padding-top: 0; padding-bottom: 16px;">
-								<!-- Title div -->
-								<div class="invTitle">
-									<div>
-										Your RSVP
 									</div>
 								</div>
-								<!-- Input Div -->
-								<div style="margin-top: 36px;">
-									<div class="form-group">
-										<div>
-											{% for person in invitees %}
-											<div class="personCard">
-												<div>{{ person.first_name }} {{ person.last_name }}</div>
+
+
+							</div>
+						</div>
+					</div>
+					<div class="">
+						<div class="invLeft">
+							<div>
+								<div style="outline: 0;">
+									<div style="padding-top: 0; padding-bottom: 16px;">
+										<!-- Input Div -->
+										<div style="margin-top: 36px;">
+											<div class="form-group">
 												<div>
-													<span
-														id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_BADGE"
-														class="badge rounded-pill bg-success" ,
-														style="visibility: hidden;">Success</span>
-													<span
-														id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_VEGAN_BADGE"
-														class="badge rounded-pill bg-info text-dark" ,
-														style="visibility: hidden;">
-														<span class="material-icons" style="font-size: 10px;">
-															spa
-														</span>
-														Vegan
-													</span>
-												</div>
-												<div class="fieldTitle" style="display: flex;">
-													<label class="attendingLabel"
-														for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}">Is
-														Attending</label>
-													<input class="form-check-input" type="radio"
-														id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
-														name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
-														value="{{ IS_ATTENDING_RB_TAG_VALUE }}" onclick="toggle_badge(
+													{% for person in invitees %}
+													<div class="personCard">
+														<div>{{ person.first_name }} {{ person.last_name }}</div>
+														<div>
+															<span
+																id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_BADGE"
+																class="badge rounded-pill bg-success" ,
+																style="visibility: hidden;">Success</span>
+															<span
+																id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_VEGAN_BADGE"
+																class="badge rounded-pill bg-info text-dark" ,
+																style="visibility: hidden;">
+																<span class="material-icons" style="font-size: 10px;">
+																	spa
+																</span>
+																Vegan
+															</span>
+														</div>
+														<div class="fieldTitle" style="display: flex;">
+															<label class="attendingLabel"
+																for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}">Is
+																Attending</label>
+															<input class="form-check-input" type="radio"
+																id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
+																name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
+																value="{{ IS_ATTENDING_RB_TAG_VALUE }}" onclick="toggle_badge(
 															'{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_BADGE',
 															true)" required>
-												</div>
-												<div class="fieldTitle" style="display: flex;">
-													<label
-														for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_NOT">Is
-														Not Attending</label>
-													<input class="form-check-input" type="radio"
-														id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_NOT"
-														name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
-														value="{{ IS_NOT_ATTENDING_RB_TAG_VALUE }}" onclick="toggle_badge(
+														</div>
+														<div class="fieldTitle" style="display: flex;">
+															<label
+																for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_NOT">Is
+																Not Attending</label>
+															<input class="form-check-input" type="radio"
+																id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_NOT"
+																name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
+																value="{{ IS_NOT_ATTENDING_RB_TAG_VALUE }}" onclick="toggle_badge(
 															'{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_BADGE',
-															false)"
-														required>
-												</div>
-												<div class="fieldTitle" style="display: flex;">
-													<label
-														for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ IS_VEGAN_CB_TAG_NAME }}">
-														Vegan
-													</label>
-													<input class="form-check-input" type="checkbox"
-														id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ IS_VEGAN_CB_TAG_NAME }}"
-														name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ IS_VEGAN_CB_TAG_NAME }}"
-														value="{{ IS_VEGAN_CB_TAG_VALUE }}"
-														onclick="toggle_vegan_badge(
+															false)" required>
+														</div>
+														<div class="fieldTitle" style="display: flex;">
+															<label
+																for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ IS_VEGAN_CB_TAG_NAME }}">
+																Vegan
+															</label>
+															<input class="form-check-input" type="checkbox"
+																id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ IS_VEGAN_CB_TAG_NAME }}"
+																name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ IS_VEGAN_CB_TAG_NAME }}"
+																value="{{ IS_VEGAN_CB_TAG_VALUE }}" onclick="toggle_vegan_badge(
 															'{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_VEGAN_BADGE',
 															this)">
+														</div>
+														<hr>
+													</div>
+													{% endfor %}
 												</div>
-												<hr>
 											</div>
-											<!-- <tr class="personName">
-													<td>{{ person.first_name }} {{ person.last_name }}</td>
-													<td><input class="form-check-input" type="radio" id="attending_rb"
-															name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
-															value="{{ IS_ATTENDING_RB_TAG_VALUE }}" required></td>
-													<td><input class="form-check-input" type="radio"
-															id="not_attending_rb"
-															name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
-															value="{{ IS_NOT_ATTENDING_RB_TAG_VALUE }}" required></td>
-													<td><input class="form-check-input" type="checkbox" id="vegan_cb"
-															name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ IS_VEGAN_CB_TAG_NAME }}"
-															value="{{ IS_VEGAN_CB_TAG_VALUE }}"></td>
-												</tr> -->
-											{% endfor %}
 										</div>
-										<!-- <table class="table table-hover ">
-											<thead class="fieldTitle">
-												<tr>
-													<th scope="col">Name</th>
-													<th scope="col">Accepts</th>
-													<th scope="col">Declines</th>
-													<th scope="col">Vegan Option</th>
-												</tr>
-											</thead>
-											<tbody>
-												{% for person in invitees %}
-												<tr class="personName">
-													<td>{{ person.first_name }} {{ person.last_name }}</td>
-													<td><input class="form-check-input" type="radio" id="attending_rb"
-															name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
-															value="{{ IS_ATTENDING_RB_TAG_VALUE }}" required></td>
-													<td><input class="form-check-input" type="radio"
-															id="not_attending_rb"
-															name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
-															value="{{ IS_NOT_ATTENDING_RB_TAG_VALUE }}" required></td>
-													<td><input class="form-check-input" type="checkbox" id="vegan_cb"
-															name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ IS_VEGAN_CB_TAG_NAME }}"
-															value="{{ IS_VEGAN_CB_TAG_VALUE }}"></td>
-												</tr>
-												{% endfor %}
-
-											</tbody>
-
-										</table> -->
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+				<div style="display: flex; flex-direction: row-reverse;">
+					<input type="submit" class="btn btn-primary btn-lg mb-4" name="fill_inv" id="choice1"
+						value="Submit my RSVP"
+						style="background-color: rgb(93, 76, 89); border-color: rgb(93, 76, 89);">
+					<!-- {% comment %} <input type="submit" class="btn btn-danger" style="font-size: smaller;" name="reject_inv"
+					id="choice2" value="We Regretfully Will Not Be Attending">
+			{% endcomment %} -->
+				</div>
+			</form>
 		</div>
-
-		<input type="submit" class="btn btn-light btn-lg mb-4" name="fill_inv" id="choice1" value="Submit my RSVP">
-		{% comment %} <input type="submit" class="btn btn-danger" style="font-size: smaller;" name="reject_inv"
-			id="choice2" value="We Regretfully Will Not Be Attending"> {% endcomment %}
-	</form>
-
+	</div>
 	<script>
 		function toggle_badge(displayId, display) {
 			var e = document.getElementById(displayId);

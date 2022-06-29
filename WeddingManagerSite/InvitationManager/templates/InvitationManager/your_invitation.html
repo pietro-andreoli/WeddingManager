@@ -10,46 +10,170 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Mea+Culpa&family=Parisienne&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Charm&family=Mea+Culpa&family=Parisienne&display=swap"
+		rel="stylesheet">
 
 	<!-- Add additional CSS in static file -->
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+	<style type="text/css">
+		.pntPageLogo {
+			font: normal normal normal 3em/1.4em 'Mea Culpa', cursive;
+			font-size: 5vh;
+		}
+
+		.fancyText {
+			font: normal normal normal 1.2em/1.35em 'Charm', cursive;
+			/* font-family: ; */
+			text-align: center;
+			font-size: 2.5vh;
+			/* font-size: 2rem; */
+		}
+
+		.inviteeName {
+			/* font-size: 1.2em; */
+			font-size: 4vw;
+		}
+
+		.sectionDivider {
+			padding-bottom: 0.5em;
+		}
+
+		.invBody {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			margin: 0 auto;
+			max-width: 980px;
+			box-sizing: border-box;
+			/* // Box shadow only on left and right */
+			width: 85%;
+			padding-bottom: 20px;
+		}
+
+		.formContainerStyle {
+			box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+			padding: 30px;
+			height: 85vh;
+			min-height: 600px;
+			display: flex;
+			flex-direction: column;
+		}
+
+
+		.imgDivider {
+			padding-top: 0.8em;
+			padding-bottom: 0.8em;
+			display: flex; 
+			flex-direction: column; 
+			align-items: center;
+		}
+
+		.imgDivider > img {
+			/* width: 34px;
+			height: 34px; */
+			width: 5vh;
+			height: 5vh;
+		}
+
+		.toRSVP {
+			background-color: rgb(93, 76, 89) !important;
+			width: 150px;
+		}
+		.toRSVP:hover {
+			box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);
+		}
+
+		.submitContainer {
+			flex-grow: 1;
+			justify-content: center;
+		}
+
+		.toRSVPLink {
+			color: white !important; 
+			text-decoration: none !important;
+		}
+
+	</style>
 </head>
 
-<body class="bg-dark text-light">
-	
-	<div class="d-flex flex-column h-100">
+<body>
 
-		<div class="d-flex flex-column align-items-center mb-4">
-			<h1 class="mb-4">P | T</h1>
-			<h3>{{ wedding_date }}</h3>
-			<h3>{{ wedding_time }}</h3>
-			<h3>{{ venue_name }}</h3>
-			<h3>{{ venue_address }}</h3>
-		</div>
-		<h3 class="d-flex justify-content-center mb-3">Reply by {{ reply_deadline }}</h3>
 
-		<div class="d-flex flex-column align-items-center px-4 mb-4">
-			<h4 class="text-center">{{ group_name }} is formally invited to the wedding of Teodora and Pietro</h4>
-			{% for guest in invitation_guests %}
-				<p>{{ guest }}</p>
-			{% endfor %}
-		</div>
+	<div>
 
-		<div class="d-flex flex-column align-items-center">
-			<button class="btn btn-light btn-lg mb-4"><a style="color: black; text-decoration: none;" href="{% url 'InvitationManager:rsvp' invitation_url_id %}">Fill my Invitation</a></button>
-			
-			<!-- <form action="{% url 'InvitationManager:invitation_endpoint' invitation_url_id %}" method="post">
-			{% csrf_token %}
-				<input type="submit" class="btn btn-light btn-lg mb-4" name="fill_inv" id="choice1" value="Fill My Invitation">
-				<input type="submit" class="btn btn-danger" style="font-size: smaller;" name="reject_inv" id="choice2" value="We Regretfully Will Not Be Attending">
-			</form> -->
+		{% include "InvitationManager/nav_bar.html" %}
+	</div>
+	<div class="invBody d-flex flex-column h-100">
+		<div class="formContainerStyle">
+			<div class="d-flex flex-column align-items-center">
+				<!-- <h1 class="mb-4 pntLogo">P | T</h1> -->
+				<!-- <img src="http://127.0.0.1:8000/invitations/media/leaves.png"> -->
+				<p class="pntPageLogo sectionDivider">P&T</p>
+				
+				<div>
+					<div class="sectionDivider">
+						<p class="fancyText">
+							Teodora and Pietro joyfully invite <br> The {{group_name}} <br> to their wedding celebration</p>
+						
+			<div class="imgDivider">
+				<img src="https://i.imgur.com/TJI5yIz.png">
+			</div>
+							<p class="fancyText">{{ wedding_date }}</p>
+						<p class="fancyText">{{ wedding_time }}</p>
+					</div>
+					<div>
+						<p class="fancyText">Please join us at</p>
+						<p class="fancyText">{{ venue_name }}</p>
+						<p class="fancyText">{{ venue_address }}</p>
+					</div>
+				</div>
+			</div>
+			<div class="sectionDivider"></div>
+			<div class="d-flex flex-column align-items-center px-4">
+				<!-- <p class="fancyText sectionDivider">
+					{{ group_name }} is formally invited <br> to the wedding of Teodora and Pietro
+				</p> -->
+				<!-- <p class="fancyText sectionDivider">
+				Please RSVP below
+			</p> -->
+
+				<!-- Commented out invitee names below, should they stay? -->
+
+				<!-- <div class="d-flex flex-column align-items-center" style="width: 100%;">
+				{% for guest in invitation_guests %}
+					<p class="fancyText inviteeName" >{{ guest }}</p>
+				{% endfor %}
+			</div> -->
+			<div class="imgDivider">
+				<img src="https://i.imgur.com/bJ0ZU1o.png">
+			</div>
+				<p class="fancyText">
+					Kindly reply by <br> {{ reply_deadline }}
+				</p>
+			</div>
+
+
+			<div class="d-flex flex-column align-items-center submitContainer">
+				<button class="btn btn-light btn-lg toRSVP">
+					<a class="toRSVPLink fancyText"
+						href="{% url 'InvitationManager:rsvp' invitation_url_id %}">RSVP</a>
+				</button>
+			</div>
 		</div>
-		<!-- <button type="button" class="btn material-icons rounded-circle float-right" style="color:orangered">live_help</button> -->
 
 	</div>
 
+	<div>
+
+		{% include "InvitationManager/footer.html" %}
+	</div>
 </body>
 
 </html>

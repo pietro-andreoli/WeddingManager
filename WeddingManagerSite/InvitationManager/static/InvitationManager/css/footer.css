@@ -1,0 +1,6 @@
+.footerContainer {
+	background-color: rgba(0, 0, 0, 0.05);
+	display: flex;
+	justify-content: center;
+	height: 50vh;
+}

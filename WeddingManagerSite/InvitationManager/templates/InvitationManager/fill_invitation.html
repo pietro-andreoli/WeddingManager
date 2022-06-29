@@ -14,18 +14,20 @@
 
 	<!-- Add additional CSS in static file -->
 	{% load static %}
-	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+	{% comment %} <link rel="stylesheet" href="{% static 'css/styles.css' %}"> {% endcomment %}
+	<link rel="stylesheet" href="{% static 'InvitationManager/fill_invitation.css' %}">
 	<style type="text/css">
 	</style>
 
 </head>
 
-<body class="bg-dark text-light">
+<body>
 	
 	Fill Invitation Page
 	
-	<form>>
+	<form>
 	{% csrf_token %}
+		<div id=".rWXue_">
 		<div>
 			<input class="form-check-input" type="checkbox" value="" id="vegan_cb">
 			<label for="vegan_cb">I would prefer vegan food options</label>
@@ -37,6 +39,7 @@
 
 		<input type="submit" class="btn btn-light btn-lg mb-4" name="fill_inv" id="choice1" value="Fill My Invitation">
 		<input type="submit" class="btn btn-danger" style="font-size: smaller;" name="reject_inv" id="choice2" value="We Regretfully Will Not Be Attending">
+	</div>
 	</form>
 
 </body>

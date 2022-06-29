@@ -369,6 +369,10 @@ class RSVPFormView(View):
 		return InvitationModels.Invitation.objects.get(invitation_url_id=invitation_id)
 
 	def render_form(self, request, inv):
+		from .event_details import EventDetails
+
+		
+		details = EventDetails()
 		form = RSVPSubform(request.POST)
 		form.parent_invitation = inv
 		
@@ -381,6 +385,9 @@ class RSVPFormView(View):
 			"IS_NOT_ATTENDING_RB_TAG_VALUE": RSVPFormView.IS_NOT_ATTENDING_RB_TAG_VALUE,
 			"IS_ATTENDING_RB_TAG_VALUE": RSVPFormView.IS_ATTENDING_RB_TAG_VALUE,
 			"TAG_NAME_DELIMETER": RSVPFormView.TAG_NAME_DELIMETER,
+			"wedding_date": details.event_start_timestamp.strftime("%b %d, %Y"),
+			"wedding_time": details.event_start_timestamp.strftime("%I:%M %p"),
+			"venue_name": details.venue_name,
 		}
 		return render(request, RSVPFormView.FORM_TEMPLATE_PATH, context)
 
@@ -400,3 +407,4 @@ class RSVPFormView(View):
 			"invitation_url_id": inv.invitation_url_id
 		}
 		return render(request, RSVPFormView.RSVP_SUCCESS_TEMPLATE_PATH, context)
+
