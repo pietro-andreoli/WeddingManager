@@ -20,7 +20,7 @@ def datetime_from_str(date_str, tz_str):
 
 class EventDetails():
 	# Path to the event details file.
-	DETAILS_FP = os.path.join(settings.BASE_DIR, "InvitationManager", "EVENT_DETAILS.json")
+	DETAILS_FP = os.path.join(settings.BASE_DIR, "InvitationManager", "configs/event_details_config.json")
 	def __init__(self):
 		import json
 
@@ -35,6 +35,7 @@ class EventDetails():
 		self.event_start_timestamp = datetime_from_str(start_timestamp_str, tz_str)
 		self.venue_name = contents["venue"]["name"]
 		self.venue_address = contents["venue"]["address"]
+		self.reply_deadline = datetime_from_str(contents["reply_deadline"], tz_str)
 	
 	@property
 	def event_time(self):

@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from .configs import Food
 
 class Guest_Relation(models.Model):
 	relation_en = models.CharField(max_length=32, primary_key=True)
@@ -42,12 +43,32 @@ class Invitation(models.Model):
 	def __str__(self):
 		return self.invitation_name
 
+	def get_all_guests(self):
+		return Guest.objects.filter(assoc_invitation=self)
+
+	@staticmethod
+	def get_invitation_by_url_id(inv_url_id):
+		return Invitation.objects.get(invitation_url_id=inv_url_id)
+
 class Group(models.Model):
 	group_label = models.CharField(primary_key=True, max_length=64, null=False, unique=True)
 	primary_contact = models.ForeignKey("Guest", null=True, on_delete=models.SET_NULL, blank=True)
 
 	def __str__(self):
 		return self.group_label
+
+class RSVP(models.Model):
+	"""
+	Model representing an RSVP response a guest has given.
+	One RSVP belongs to One guest.
+	A reference to the associated RSVP can be found in the Guest model.
+	"""
+
+	FOOD_CHOICES = Food.options
+
+	rsvp_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+	is_attending = models.BooleanField(default=False, null=True)
+	is_vegan = models.BooleanField(default=False)
 
 class Guest(models.Model):
 	# The options for the field whose_guest.
@@ -73,6 +94,7 @@ class Guest(models.Model):
 	is_overseas = models.BooleanField(default=False)
 	assoc_invitation = models.ForeignKey(Invitation, null=True, on_delete=models.SET_NULL, blank=True)
 	is_attending = models.BooleanField(null=True, default=None)
+	rsvp = models.ForeignKey(RSVP, null=True, on_delete=models.SET_NULL, blank=True)
 
 	def __str__(self):
 		return self.first_name + " " + self.last_name
@@ -82,3 +104,8 @@ class Guest(models.Model):
 	
 	def get_full_name(self):
 		return self.first_name + ' ' + self.last_name
+	
+	def has_rsvpd(self):
+		return self.rsvp is not None
+	
+
