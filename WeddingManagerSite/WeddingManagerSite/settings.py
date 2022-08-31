@@ -38,6 +38,11 @@ def load_secret_key(fp):
 		str: Secret key string.
 	"""
 
+	try:
+		return os.environ["SECRET_KEY"]
+	except:
+		pass
+	
 	with open(fp, 'r') as secret_key_f:
 		return secret_key_f.read().strip()
 
