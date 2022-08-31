@@ -42,7 +42,7 @@ def load_secret_key(fp):
 		return os.environ["SECRET_KEY"]
 	except:
 		pass
-	
+
 	with open(fp, 'r') as secret_key_f:
 		return secret_key_f.read().strip()
 
@@ -67,6 +67,18 @@ def load_env_vars(fp):
 		dict: A dictionary containing environment variables as key-value pairs.
 	"""
 
+	print("Attempting to load environment variables from os.environ")
+	try:
+		return {
+			"environment": os.environ["environment"],
+			"debug": os.environ["debug"]
+		}
+		
+		print("Environment variables successfully loaded from os.environ")
+	except:
+		print("Could not load environment variables from os.environ")
+
+	print("Attempting to load environment variables from file")
 	with open(fp, 'r') as env_var_f:
 		return json.load(env_var_f)
 
