@@ -87,7 +87,9 @@ ENVIRONMENT_VARIABLES = load_env_vars(gen_env_vars_fp())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ENVIRONMENT_VARIABLES["debug"] == "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+	"wedding-wizard.herokuapp.com"
+]
 
 
 # Application definition
