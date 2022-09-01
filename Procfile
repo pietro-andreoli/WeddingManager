@@ -1,2 +1,2 @@
-release: python manage.py migrate
+release: python WeddingManagerSite/manage.py migrate
 web: gunicorn WeddingManagerSite.wsgi
