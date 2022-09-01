@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import json
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -136,6 +137,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'WeddingManagerSite.wsgi.application'
 
+MAX_CONN_AGE = 600
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -147,6 +149,12 @@ DATABASES = {
 	}
 }
 
+if "DATABASE_URL" in os.environ:
+	# Configure Django for DATABASE_URL environment variable.
+	DATABASES["default"] = dj_database_url.config(
+		conn_max_age=MAX_CONN_AGE, 
+		ssl_require=True
+	)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
