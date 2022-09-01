@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import json
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +39,11 @@ def load_secret_key(fp):
 		str: Secret key string.
 	"""
 
+	try:
+		return os.environ["SECRET_KEY"]
+	except:
+		pass
+
 	with open(fp, 'r') as secret_key_f:
 		return secret_key_f.read().strip()
 
@@ -62,15 +68,29 @@ def load_env_vars(fp):
 		dict: A dictionary containing environment variables as key-value pairs.
 	"""
 
+	print("Attempting to load environment variables from os.environ")
+	try:
+		return {
+			"environment": os.environ["environment"],
+			"debug": os.environ["debug"]
+		}
+		
+		print("Environment variables successfully loaded from os.environ")
+	except:
+		print("Could not load environment variables from os.environ")
+
+	print("Attempting to load environment variables from file")
 	with open(fp, 'r') as env_var_f:
 		return json.load(env_var_f)
 
 ENVIRONMENT_VARIABLES = load_env_vars(gen_env_vars_fp())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = ENVIRONMENT_VARIABLES["debug"]
+DEBUG = ENVIRONMENT_VARIABLES["debug"] == "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+	"wedding-wizard.herokuapp.com"
+]
 
 
 # Application definition
@@ -93,6 +113,9 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	# Simplified static file serving.
+	# https://warehouse.python.org/project/whitenoise/
+	'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'WeddingManagerSite.urls'
@@ -117,6 +140,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'WeddingManagerSite.wsgi.application'
 
+MAX_CONN_AGE = 600
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -128,6 +152,12 @@ DATABASES = {
 	}
 }
 
+if "DATABASE_URL" in os.environ:
+	# Configure Django for DATABASE_URL environment variable.
+	DATABASES["default"] = dj_database_url.config(
+		conn_max_age=MAX_CONN_AGE, 
+		ssl_require=True
+	)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -165,4 +195,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_URL = "/static/"
