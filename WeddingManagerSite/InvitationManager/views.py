@@ -365,10 +365,10 @@ class RSVPFormView(View):
 		# Render the form again.
 		return self.render_post_rsvp(request, inv)
 
-	def get_assoc_invitation(self, invitation_id):
+	def get_assoc_invitation(self, invitation_id) -> InvitationModels.Invitation:
 		return InvitationModels.Invitation.objects.get(invitation_url_id=invitation_id)
 
-	def render_form(self, request, inv):
+	def render_form(self, request, inv: InvitationModels.Invitation):
 		from .event_details import EventDetails
 
 		
@@ -388,6 +388,8 @@ class RSVPFormView(View):
 			"wedding_date": details.event_start_timestamp.strftime("%b %d, %Y"),
 			"wedding_time": details.event_start_timestamp.strftime("%I:%M %p"),
 			"venue_name": details.venue_name,
+			"invitation_url_id": inv.invitation_url_id
+
 		}
 		return render(request, RSVPFormView.FORM_TEMPLATE_PATH, context)
 
