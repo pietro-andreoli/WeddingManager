@@ -16,7 +16,7 @@ from .forms import ImportGuestsForm, RSVPSubform
 
 
 def index(request):
-	return HttpResponse("Hello world! Welcome to the InvitationManager app!")
+	return render(request, "InvitationManager/coming_soon.html")
 
 def help_page(request):
 	return render(request, "InvitationManager/help.html")

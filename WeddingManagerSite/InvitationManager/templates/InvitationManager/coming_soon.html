@@ -1,0 +1,123 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<title>Coming Soon</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<link href="https://fonts.googleapis.com/css2?family=Charm&family=Mea+Culpa&family=Parisienne&display=swap"
+		rel="stylesheet">
+
+	<style type="text/css">
+		.pntPageLogo {
+			font: normal normal normal 3em/1.4em 'Mea Culpa', cursive;
+			font-size: 5vh;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<span>
+			<p class="pntPageLogo">P&T</p>
+			<p>Wedding invitations</p>
+			<p>Coming Soon</p>
+		</span>
+	</div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	{% block title %}<title>You're Invited</title>{% endblock %}
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Mea+Culpa&family=Parisienne&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Charm&family=Mea+Culpa&family=Parisienne&display=swap"
+		rel="stylesheet">
+
+	<!-- Add additional CSS in static file -->
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+	<style type="text/css">
+		.pntPageLogo {
+			font: normal normal normal 3em/1.4em 'Mea Culpa', cursive;
+			font-size: 5vh;
+		}
+
+		.fancyText {
+			font: normal normal normal 1.2em/1.35em 'Charm', cursive;
+			/* font-family: ; */
+			text-align: center;
+			font-size: 2.5vh;
+			/* font-size: 2rem; */
+		}
+
+		.invBody {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			margin: 0 auto;
+			max-width: 30vw;
+			width: 100%;
+			max-height: 25vh;
+			min-width: 250px;
+		}
+
+		.formContainerStyle {
+			box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+			padding: 30px;
+			height: 85vh;
+			min-height: 250px;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.pageContainer {
+			display: flex;
+			height: 100vh;
+			flex-direction: column;
+			justify-content: center;
+			align-content: center;
+			align-items: center;
+
+		}
+
+		.centerStuff {
+			display: flex;
+			align-content: center;
+			justify-content: center;
+			height: 100%;
+			flex-direction: column;
+			align-items: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="pageContainer">
+		<div class="invBody d-flex flex-column h-100">
+			<div class="formContainerStyle">
+				<div class="centerStuff">
+					<p class="pntPageLogo">P&T</p>
+					<p class="fancyText">Wedding Invitations</p>
+					<p class="fancyText">Coming Soon</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+
+</html>
