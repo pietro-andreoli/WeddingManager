@@ -10,6 +10,7 @@ from django.http.response import HttpResponseBadRequest, HttpResponseServerError
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic import View
+from django.http.request import HttpRequest
 
 from . import models as InvitationModels
 from .forms import ImportGuestsForm, RSVPSubform
@@ -23,6 +24,12 @@ def help_page(request):
 
 def missing_invitation(request):
 	return  render(request, "InvitationManager/missing_invitation.html")
+
+def location_page(request: HttpRequest):
+	context = {
+		"invitation_url_id": request.session["invitation_url_id"]
+	}
+	return render(request, "InvitationManager/location.html", context)
 
 # @staff_member_required
 # def guest_import_page(request):
@@ -212,13 +219,17 @@ class InvitationHomepage(View):
 				return "REJECT_INVITATION"
 			raise ValueError("Invitation option code not recognized.")
 
-	def get(self, request, invitation_id, *args, **kwargs):
+	def get(self, request: HttpRequest, invitation_id, *args, **kwargs):
 		from .event_details import EventDetails
+
 		invitation = None
 		try:
 			invitation = self.get_invitation_by_url_id(invitation_id)
 		except django_exceptions.ObjectDoesNotExist as no_inv_found_err:
 			return missing_invitation(request)
+
+		request.session["invitation_url_id"] = invitation.invitation_url_id
+
 		#https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Home_page
 		details = EventDetails()
 		guests = InvitationModels.Guest.objects.filter(assoc_invitation=invitation)
@@ -258,7 +269,7 @@ class InvitationHomepage(View):
 		print(InvitationHomepage.HomepageButtonOptions.as_str(selected_response))
 		return render(request, "InvitationManager/fill_invitation.html", context=None)
 
-	def get_invitation_by_url_id(self, url_id):
+	def get_invitation_by_url_id(self, url_id) -> InvitationModels.Invitation:
 		"""
 		Gets the Invitation object associated with this URL ID.
 		If there is no Invitation associated with this URL, raises ObjectDoesNotExist exception.
