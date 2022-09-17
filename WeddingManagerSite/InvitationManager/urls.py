@@ -11,7 +11,7 @@ urlpatterns = [
 	path('yourinvitation/<str:invitation_id>', views.InvitationHomepage.as_view(), name='invitation_endpoint'),
 	path('yourinvitation/', views.missing_invitation, name='invalid_invitation_endpoint'),
 	path("import/", views.ImportGuestsView.as_view(), name="db_import_endpoint"),
-	path("help/", views.help_page, name="help_endpoint"),
+	path("help/", views.help_page, name="help"),
 	path("yourinvitation/rsvp/<str:invitation_id>", views.RSVPFormView.as_view(), name="rsvp"),
 	path("location", views.location_page, name="location"),
 	# path('media/<str:media_name>', 'django.views.static.serve', { 'document_root': settings.MEDIA_ROOT })
