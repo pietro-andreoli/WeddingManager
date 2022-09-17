@@ -152,9 +152,15 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'InvitationManager:invitation_endpoint' invitation_url_id %}">Home<span class="sr-only">(current)</span></a>
-				</li>
+				{% if invitation_url_id %}
+					<li class="nav-item active">
+						<a class="nav-link" href="{% url 'InvitationManager:invitation_endpoint' invitation_url_id %}">Home<span class="sr-only">(current)</span></a>
+					</li>
+				{% else %}
+					<li class="nav-item active">
+						<a class="nav-link" href="{% url 'InvitationManager:invalid_invitation_endpoint' %}">Home<span class="sr-only">(current)</span></a>
+					</li>
+				{% endif %}
 				
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'InvitationManager:location' %}">Where<span class="sr-only"></span></a>
