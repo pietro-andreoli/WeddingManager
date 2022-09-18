@@ -22,6 +22,15 @@ class Invitation_Email(models.Model):
 	def __str__(self):
 		return self.email_id
 
+def generate_invitation_url_id():
+	"""
+	Generates a UUID.
+
+	Returns:
+		str: UUID string, truncated to 5 characters.
+	"""
+	return str(uuid.uuid4())[:5]
+
 class Invitation(models.Model):
 	# Uniquely identifies each row
 	invitation_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -29,7 +38,13 @@ class Invitation(models.Model):
 	# Name of the invitation that can be displayed to users. Ex: "Guido Family"
 	# invitation_public_name = models.CharField(max_length=128, default="Guest Group")
 	# The ID used in the URL in the invitation email
-	invitation_url_id = models.CharField(max_length=36, null=False, unique=True, blank=True, default=uuid.uuid4)
+	invitation_url_id = models.CharField(
+		max_length=36,
+		null=False,
+		unique=True,
+		blank=True,
+		default=generate_invitation_url_id
+	)
 	# States whether the invitation has been sent already
 	invitation_sent = models.BooleanField(default=False)
 	# Date + time sent
