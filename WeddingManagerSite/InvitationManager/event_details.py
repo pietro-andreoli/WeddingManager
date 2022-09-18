@@ -40,6 +40,8 @@ class EventDetails():
 		self.reply_deadline = datetime_from_str(contents["reply_deadline"], tz_str)
 		self.help_phone = contents["contact"]["help_phone"]
 		self.help_email = contents["contact"]["help_email"]
+		self.partner_1 = contents["people"]["partner_1"]
+		self.partner_2 = contents["people"]["partner_2"]
 	
 	@property
 	def event_time(self):

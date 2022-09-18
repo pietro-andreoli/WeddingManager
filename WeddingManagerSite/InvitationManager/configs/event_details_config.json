@@ -13,5 +13,17 @@
 	"contact": {
 		"help_email": "help@email.com",
 		"help_phone": "123-456-7890"
+	},
+	"people": {
+		"partner_1": {
+			"first_name": "Perrin",
+			"last_name": "Aybara",
+			"full_name": "Perrin Aybara"
+		},
+		"partner_2": {
+			"first_name": "Faile",
+			"last_name": "Bashere",
+			"full_name": "Faile Bashere"
+		}
 	}
 }
