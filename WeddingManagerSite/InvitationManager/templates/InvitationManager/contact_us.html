@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	{% block title %}<title>You're Invited</title>{% endblock %}
+	{% block title %}<title>P&T Contact Us</title>{% endblock %}
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -67,6 +67,7 @@
 			display: flex;
 			flex-direction: column;
 			overflow: scroll;
+			align-items: center;
 			/* justify-content: space-evenly; */
 		}
 
@@ -147,59 +148,16 @@
 			{% include "InvitationManager/nav_bar.html" %}
 		</div>
 		<div class="invBody d-flex flex-column h-100">
-			<div class="formContainerStyle">
-				<h1>FAQ</h1>
+			<div class="formContainerStyle fancyText">
+				<h1 style="font-size: 3.5vh;">Contact Us</h1>
 				<br>
-				<div class="qContainer">
-					<h3>How do I RSVP?</h3>
-					<p>
-						To RSVP you need to find the invitation link that was sent to you by the Bride and Groom.
-						This link should've been sent to you via email, facebook message or text.
-						If you cannot find your invitation link, please send us an email by clicking the button below.
-					</p>
-					<div style="display: flex; flex-direction: column; align-items: center;">
-						<a class="toRSVPLink" href="{% url 'InvitationManager:contact_us' %}">
-						<button type="button" class="btn btn-light mailButton">
-							<span class="material-symbols-outlined" style="padding-right: 2px;">
-								mail
-							</span>
-							Contact Us
-						</button>
-					</a>
-					</div>
-				</div>
-				<div class="qContainer">
-					<h3>I can't find my invitation link, what do I do?</h3>
-					<p>
-						That's OK! We can help you get your link and RSVP. Please contact us by clicking the "Contact Us" button below.
-					</p>
-					<div style="display: flex; flex-direction: column; align-items: center;">
-						<a class="toRSVPLink" href="{% url 'InvitationManager:contact_us' %}">
-						<button type="button" class="btn btn-light mailButton">
-							<span class="material-symbols-outlined" style="padding-right: 2px;">
-								mail
-							</span>
-							Contact Us
-						</button>
-						</a>
-					</div>
-				</div>
-				<div class="qContainer">
-					<h3>I have a question I dont see on the list here</h3>
-					<p>
-						Feel free to contact us for help!
-					</p>
-					<div style="display: flex; flex-direction: column; align-items: center;">
-						<a class="toRSVPLink" href="{% url 'InvitationManager:contact_us' %}">
-						<button type="button" class="btn btn-light mailButton">
-							<span class="material-symbols-outlined" style="padding-right: 2px;">
-								mail
-							</span>
-							Contact Us
-						</button>
-						</a>
-					</div>
-				</div>
+				<p class="">Need help? Have a question? Contact us here!</p> 
+				<br>
+				<p>Email us at </p>
+				<a href="mailto:{{ help_email }}">{{ help_email }}</a>
+				<br>
+				<p>Text or call us at </p>
+				<a href="tel:{{ help_phone }}">{{ help_phone }}</a>
 			</div>
 		</div>
 

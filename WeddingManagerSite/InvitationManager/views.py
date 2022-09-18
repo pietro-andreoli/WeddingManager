@@ -20,7 +20,10 @@ def index(request):
 	return render(request, "InvitationManager/coming_soon.html")
 
 def help_page(request):
-	return render(request, "InvitationManager/help.html")
+	context = {}
+	if "invitation_url_id" in request.session:
+		context["invitation_url_id"] = request.session["invitation_url_id"]
+	return render(request, "InvitationManager/help.html", context)
 
 def missing_invitation(request):
 	return  render(request, "InvitationManager/missing_invitation.html")
@@ -29,13 +32,25 @@ def location_page(request: HttpRequest):
 	from .event_details import EventDetails
 	details = EventDetails()
 	context = {
-		"invitation_url_id": request.session["invitation_url_id"],
 		"venue_name": details.venue_name,
 		"venue_addr": details.venue_address,
 		"google_embed_url": details.venue_map_embed_link,
 		"google_link": details.venue_google_link
 	}
+	if "invitation_url_id" in request.session:
+		context["invitation_url_id"] = request.session["invitation_url_id"]
 	return render(request, "InvitationManager/location.html", context)
+
+def contact_us_page(request: HttpRequest):
+	from .event_details import EventDetails
+	details = EventDetails()
+	context = {
+		"help_phone": details.help_phone,
+		"help_email": details.help_email
+	}
+	if "invitation_url_id" in request.session:
+		context["invitation_url_id"] = request.session["invitation_url_id"]
+	return render(request, "InvitationManager/contact_us.html", context)
 
 @method_decorator(staff_member_required, name="dispatch")
 class ImportGuestsView(View):
