@@ -144,7 +144,12 @@
 <body>
 	<nav class="navbar navbar-expand-sm navbar-light bg-light d-flex justify-content-around fixed-top bar">
 		<!-- P&T Text Logo -->
-		<a class="navbar-brand" href="#"><p class="pntLogo">P&T</p></a>
+		{% if invitation_url_id %}
+		<a class="navbar-brand nav-link" href="{% url 'InvitationManager:invitation_endpoint' invitation_url_id %}">
+		{% else %}
+		<a class="navbar-brand nav-link" href="{% url 'InvitationManager:invalid_invitation_endpoint' %}">
+		{% endif %}
+			<p class="pntLogo">P&T</p></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
