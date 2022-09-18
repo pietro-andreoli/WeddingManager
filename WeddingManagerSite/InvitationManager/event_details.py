@@ -38,6 +38,8 @@ class EventDetails():
 		self.venue_google_link = contents["venue"]["google_map_link"]
 		self.venue_map_embed_link = contents["venue"]["google_map_embed_link"]
 		self.reply_deadline = datetime_from_str(contents["reply_deadline"], tz_str)
+		self.help_phone = contents["contact"]["help_phone"]
+		self.help_email = contents["contact"]["help_email"]
 	
 	@property
 	def event_time(self):
