@@ -1,19 +1,29 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
-	<link rel="stylesheet" href="{% static "InvitationManager/css/styles.css" %}">
-	<link rel="stylesheet" href="{% static "InvitationManager/css/footer.css" %}">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+	<link rel="stylesheet" href="{% static " InvitationManager/css/styles.css" %}">
+	<link rel="stylesheet" href="{% static " InvitationManager/css/footer.css" %}">
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 	<style type="text/css">
-		{% comment %} .footerContainer {
+		{
+			% comment %
+		}
+
+		.footerContainer {
 			background-color: rgba(0, 0, 0, 0.5);
 			display: flex;
-		} {% endcomment %}
+		}
+
+			{
+			% endcomment %
+		}
 
 		.footerContainer {
 			max-height: 30px;
@@ -36,17 +46,21 @@
 		}
 	</style>
 </head>
+
 <body>
 	<div class="footerContainer">
 		<!-- <span style="padding-right: 5px;">
 			Need help? Email us
 		</span> -->
-		<button type="button" class="btn btn-light mailButton">
-			<span class="material-symbols-outlined" style="padding-right: 2px;">
-				mail
-			</span>
-			Email Us
-		</button>
+		<a class="toRSVPLink" href="{% url 'InvitationManager:contact_us' %}">
+			<button type="button" class="btn btn-light mailButton">
+				<span class="material-symbols-outlined" style="padding-right: 2px;">
+					mail
+				</span>
+				Contact Us
+			</button>
+		</a>
 	</div>
 </body>
+
 </html>
