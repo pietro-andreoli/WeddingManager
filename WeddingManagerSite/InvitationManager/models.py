@@ -123,4 +123,37 @@ class Guest(models.Model):
 	def has_rsvpd(self):
 		return self.rsvp is not None
 	
-
+class Config(models.Model):
+	config_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+	is_main_config = models.BooleanField(
+		default=False,
+		help_text="True if this is the config that has all real data. False otherwise."
+	)
+	event_date = models.DateTimeField(null=True)
+	event_date_tz = models.CharField(null=True, max_length=64)
+	venue_addr = models.CharField(null=True, max_length=512)
+	venue_name = models.CharField(null=True, max_length=128)
+	venue_google_map_link = models.URLField(
+		null=True,
+		max_length=512,
+		help_text="Link to the address on Google maps."
+	)
+	venue_google_map_embed_link = models.URLField(
+		null=True,
+		max_length=512,
+		help_text="Embed link that Google provides in its embedded iframe."
+	)
+	reply_deadline = models.DateTimeField(null=True)
+	contact_help_email = models.EmailField(null=True)
+	contact_help_phone = models.CharField(null=True, max_length=16)
+	partner_1_first_name = models.CharField(null=True, max_length=32)
+	partner_1_last_name = models.CharField(null=True, max_length=32)
+	partner_1_full_name = models.CharField(null=True, max_length=64)
+	partner_2_first_name = models.CharField(null=True, max_length=32)
+	partner_2_last_name = models.CharField(null=True, max_length=32)
+	partner_2_full_name = models.CharField(null=True, max_length=64)
+	logo_acronym = models.CharField(
+		default='',
+		max_length=6,
+		help_text="Text logo to use on website. Example: P&T"
+	)

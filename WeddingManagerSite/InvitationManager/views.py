@@ -190,7 +190,9 @@ class InvitationHomepage(View):
 			"group_name": invitation.invitation_name,
 			"invitation_guests": [guest.get_full_name() for guest in guests],
 			"reply_deadline": details.reply_deadline.strftime("%Y-%m-%d %I:%M:%S %p %Z"),
-			"invitation_url_id": invitation_id
+			"invitation_url_id": invitation_id,
+			"partner_1": details.partner_1,
+			"partner_2": details.partner_2
 		}
 		return render(request, "InvitationManager/your_invitation.html", context=invitation_context)
 	
