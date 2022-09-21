@@ -48,15 +48,7 @@ class EventDetails():
 		import json
 
 		self.config_model: models.Config = get_main_config()
-
-		# Read event details JSON file into memory.
-		contents = None
-		with open(EventDetails.DETAILS_FP, 'r') as details_f:
-			contents = json.load(details_f)
 		
-		# Load essential information into this object.
-		start_timestamp_str = contents["event_date"]["t_stamp"]
-		tz_str = contents["event_date"]["tz"]
 		self.event_start_timestamp = self.config_model.event_date
 		self.venue_name = self.config_model.venue_name
 		self.venue_address = self.config_model.venue_addr
