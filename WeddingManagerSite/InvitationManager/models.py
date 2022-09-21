@@ -133,8 +133,16 @@ class Config(models.Model):
 	event_date_tz = models.CharField(null=True, max_length=64)
 	venue_addr = models.CharField(null=True, max_length=512)
 	venue_name = models.CharField(null=True, max_length=128)
-	venue_google_map_link = models.URLField(null=True, max_length=512)
-	venue_google_map_embed_link = models.URLField(null=True, max_length=512)
+	venue_google_map_link = models.URLField(
+		null=True,
+		max_length=512,
+		help_text="Link to the address on Google maps."
+	)
+	venue_google_map_embed_link = models.URLField(
+		null=True,
+		max_length=512,
+		help_text="Embed link that Google provides in its embedded iframe."
+	)
 	reply_deadline = models.DateTimeField(null=True)
 	contact_help_email = models.EmailField(null=True)
 	contact_help_phone = models.CharField(null=True, max_length=16)
@@ -144,3 +152,8 @@ class Config(models.Model):
 	partner_2_first_name = models.CharField(null=True, max_length=32)
 	partner_2_last_name = models.CharField(null=True, max_length=32)
 	partner_2_full_name = models.CharField(null=True, max_length=64)
+	logo_acronym = models.CharField(
+		default='',
+		max_length=6,
+		help_text="Text logo to use on website. Example: P&T"
+	)
