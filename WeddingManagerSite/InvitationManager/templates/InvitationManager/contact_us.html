@@ -136,6 +136,10 @@
 		.qContainer {
 			padding-bottom: 30px;
 		}
+
+		.contactLink {
+			color: rgb(93, 76, 89);
+		}
 	</style>
 </head>
 
@@ -151,13 +155,13 @@
 			<div class="formContainerStyle fancyText">
 				<h1 style="font-size: 3.5vh;">Contact Us</h1>
 				<br>
-				<p class="">Need help? Have a question? Contact us here!</p> 
+				<p>Need help? Have a question? Contact us here!</p> 
 				<br>
-				<p>Email us at </p>
-				<a href="mailto:{{ help_email }}">{{ help_email }}</a>
+				<p>Email us at</p>
+				<a class="contactLink" href="mailto:{{ help_email }}">{{ help_email }}</a>
 				<br>
 				<p>Text or call us at </p>
-				<a href="tel:{{ help_phone }}">{{ help_phone }}</a>
+				<a class="contactLink" href="tel:{{ help_phone }}">{{ help_phone_formatted }}</a>
 			</div>
 		</div>
 
