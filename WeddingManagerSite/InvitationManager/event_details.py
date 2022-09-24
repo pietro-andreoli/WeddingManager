@@ -3,6 +3,14 @@ import pytz
 from django.conf import settings
 import os
 from . import models
+import pytz
+from django.utils import timezone
+
+def convert_utc_to_curr_timezone(naive_t: datetime) -> datetime:
+	utc_dt = naive_t.replace(tzinfo=pytz.UTC)
+	localtz = utc_dt.astimezone(timezone.get_current_timezone())
+	return localtz
+
 
 def datetime_from_str(date_str, tz_str):
 	"""
@@ -18,6 +26,19 @@ def datetime_from_str(date_str, tz_str):
 
 	tz = pytz.timezone(tz_str)
 	return tz.localize(datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S"))
+
+def hour24_as_hour12(hr24: int) -> int:
+	"""
+	Convert a 24 hour format hour int to a 12 hour format hour int.
+
+	Args:
+		hr24 (int): hour in 24 hour format.
+
+	Returns:
+		int: hour in 12 hour format.
+	"""
+
+	return 12 - ((- hr24) % 12)
 
 def get_main_config() -> models.Config:
 	"""
@@ -49,12 +70,12 @@ class EventDetails():
 
 		self.config_model: models.Config = get_main_config()
 		
-		self.event_start_timestamp = self.config_model.event_date
+		self.event_start_timestamp = convert_utc_to_curr_timezone(self.config_model.event_date)
 		self.venue_name = self.config_model.venue_name
 		self.venue_address = self.config_model.venue_addr
 		self.venue_google_link = self.config_model.venue_google_map_link
 		self.venue_map_embed_link = self.config_model.venue_google_map_embed_link
-		self.reply_deadline = self.config_model.reply_deadline
+		self.reply_deadline = convert_utc_to_curr_timezone(self.config_model.reply_deadline)
 		self.help_phone = self.config_model.contact_help_phone
 		self.help_email = self.config_model.contact_help_email
 		self.partner_1 = {
@@ -67,6 +88,12 @@ class EventDetails():
 			"first_name": self.config_model.partner_2_first_name,
 			"last_name": self.config_model.partner_2_last_name
 		}
+		self.ceremony_timestamp: datetime = convert_utc_to_curr_timezone(self.config_model.ceremony_timestamp)
+		self.ceremony_location_name: str = self.config_model.ceremony_location_name
+		self.ceremony_location_addr: str = self.config_model.ceremony_location_addr
+		self.reception_timestamp: datetime = convert_utc_to_curr_timezone(self.config_model.reception_timestamp)
+		self.reception_location_name: str = self.config_model.reception_location_name
+		self.reception_location_addr: str = self.config_model.reception_location_addr
 	
 	@property
 	def event_time(self):

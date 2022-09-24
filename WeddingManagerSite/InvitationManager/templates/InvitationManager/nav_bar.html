@@ -168,6 +168,9 @@
 				{% endif %}
 				
 				<li class="nav-item">
+					<a class="nav-link {% if 'info' in request.path_info %}active{% endif %}" href="{% url 'InvitationManager:info' %}">Info<span class="sr-only"></span></a>
+				</li>
+				<li class="nav-item">
 					<a class="nav-link {% if 'location' in request.path_info %}active{% endif %}" href="{% url 'InvitationManager:location' %}">Where<span class="sr-only"></span></a>
 				</li>
 				<li class="nav-item">

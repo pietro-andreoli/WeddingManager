@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 import logging
 from xmlrpc.client import SERVER_ERROR
 
@@ -11,6 +12,8 @@ from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.http.request import HttpRequest
+
+from InvitationManager import event_details
 
 from . import models as InvitationModels
 from .forms import ImportGuestsForm, RSVPSubform
@@ -56,6 +59,29 @@ def contact_us_page(request: HttpRequest):
 	if "invitation_url_id" in request.session:
 		context["invitation_url_id"] = request.session["invitation_url_id"]
 	return render(request, "InvitationManager/contact_us.html", context)
+
+def info_page(request: HttpRequest):
+	from .event_details import EventDetails
+	details = EventDetails()
+	ceremony_tstamp: datetime = details.ceremony_timestamp
+	context = {
+		"wedding_date_formatted": "{dt:%B} {dt.day}, {dt.year}".format(dt=details.ceremony_timestamp),
+		"ceremony_time_formatted": "{hr}:{dt:%M} {m}".format(
+			dt=details.ceremony_timestamp, 
+			hr=event_details.hour24_as_hour12(details.ceremony_timestamp.hour),
+			m='AM' if details.ceremony_timestamp.hour < 12 else 'PM'
+		),
+		"ceremony_location": details.ceremony_location_name,
+		"reception_time_formatted": "{hr}:{dt:%M} {m}".format(
+			dt=details.reception_timestamp, 
+			hr=event_details.hour24_as_hour12(details.reception_timestamp.hour),
+			m='AM' if details.reception_timestamp.hour < 12 else 'PM'
+		),
+		"reception_location": details.reception_location_name
+	}
+	if "invitation_url_id" in request.session:
+		context["invitation_url_id"] = request.session["invitation_url_id"]
+	return render(request, "InvitationManager/event_info.html", context)
 
 @method_decorator(staff_member_required, name="dispatch")
 class ImportGuestsView(View):
