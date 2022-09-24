@@ -158,23 +158,23 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				{% if invitation_url_id %}
-					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'InvitationManager:invitation_endpoint' invitation_url_id %}">Home<span class="sr-only">(current)</span></a>
+					<li class="nav-item">
+						<a class="nav-link {% if 'invitation' in request.path_info %}active{% endif %}" href="{% url 'InvitationManager:invitation_endpoint' invitation_url_id %}">Home<span class="sr-only">(current)</span></a>
 					</li>
 				{% else %}
-					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'InvitationManager:invalid_invitation_endpoint' %}">Home<span class="sr-only">(current)</span></a>
+					<li class="nav-item">
+						<a class="nav-link {% if 'invitation' in request.path_info %}active{% endif %}" href="{% url 'InvitationManager:invalid_invitation_endpoint' %}">Home<span class="sr-only">(current)</span></a>
 					</li>
 				{% endif %}
 				
-				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'InvitationManager:location' %}">Where<span class="sr-only"></span></a>
+				<li class="nav-item">
+					<a class="nav-link {% if 'location' in request.path_info %}active{% endif %}" href="{% url 'InvitationManager:location' %}">Where<span class="sr-only"></span></a>
 				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'InvitationManager:help' %}">Help<span class="sr-only"></span></a>
+				<li class="nav-item">
+					<a class="nav-link {% if 'help' in request.path_info %}active{% endif %}" href="{% url 'InvitationManager:help' %}">Help<span class="sr-only"></span></a>
 				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'InvitationManager:contact_us' %}">Contact Us<span class="sr-only"></span></a>
+				<li class="nav-item">
+					<a class="nav-link {% if 'contact' in request.path_info %}active{% endif %}" href="{% url 'InvitationManager:contact_us' %}">Contact Us<span class="sr-only"></span></a>
 				</li>
 				<!-- ADD MORE BUTTONS HERE -->
 				<!-- <li class="nav-item">

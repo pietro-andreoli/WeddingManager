@@ -46,6 +46,11 @@ def contact_us_page(request: HttpRequest):
 	details = EventDetails()
 	context = {
 		"help_phone": details.help_phone,
+		"help_phone_formatted": "-".join([
+			details.help_phone[:3],
+			details.help_phone[3:6],
+			details.help_phone[6:]
+		]),
 		"help_email": details.help_email
 	}
 	if "invitation_url_id" in request.session:
