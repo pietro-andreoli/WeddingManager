@@ -15,6 +15,7 @@ urlpatterns = [
 	path("yourinvitation/rsvp/<str:invitation_id>", views.RSVPFormView.as_view(), name="rsvp"),
 	path("location", views.location_page, name="location"),
 	path("contact", views.contact_us_page, name="contact_us"),
+	path("info", views.info_page, name="info"),
 
 	# path('media/<str:media_name>', 'django.views.static.serve', { 'document_root': settings.MEDIA_ROOT })
 ]

@@ -129,8 +129,9 @@ class Config(models.Model):
 		default=False,
 		help_text="True if this is the config that has all real data. False otherwise."
 	)
-	event_date = models.DateTimeField(null=True)
+	event_date = models.DateTimeField(null=True, help_text="In local timezone")
 	event_date_tz = models.CharField(null=True, max_length=64)
+	event_date_tz_short = models.CharField(null=True, max_length=8, help_text="EST, PST, etc")
 	venue_addr = models.CharField(null=True, max_length=512)
 	venue_name = models.CharField(null=True, max_length=128)
 	venue_google_map_link = models.URLField(
@@ -143,7 +144,7 @@ class Config(models.Model):
 		max_length=512,
 		help_text="Embed link that Google provides in its embedded iframe."
 	)
-	reply_deadline = models.DateTimeField(null=True)
+	reply_deadline = models.DateTimeField(null=True, help_text="In local timezone")
 	contact_help_email = models.EmailField(null=True)
 	contact_help_phone = models.CharField(null=True, max_length=16)
 	partner_1_first_name = models.CharField(null=True, max_length=32)
@@ -157,3 +158,9 @@ class Config(models.Model):
 		max_length=6,
 		help_text="Text logo to use on website. Example: P&T"
 	)
+	ceremony_timestamp = models.DateTimeField(null=True, help_text="In local timezone")
+	ceremony_location_name = models.CharField(null=True, max_length=128)
+	ceremony_location_addr = models.CharField(null=True, max_length=256)
+	reception_timestamp = models.DateTimeField(null=True, help_text="In local timezone")
+	reception_location_name = models.CharField(null=True, max_length=128)
+	reception_location_addr = models.CharField(null=True, max_length=256)
