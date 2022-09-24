@@ -35,10 +35,13 @@
 			font-size: 2.5vh;
 			/* font-size: 2rem; */
 		}
+		
 
 		.inviteeName {
-			/* font-size: 1.2em; */
-			font-size: 4vw;
+			font-size: 1.4em;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			/* font-size: 2vw; */
 		}
 
 		.sectionDivider {
@@ -124,8 +127,13 @@
 				
 				<div>
 					<div class="sectionDivider">
-						<p class="fancyText">
-							{{ partner_1.first_name }} and {{ partner_2.first_name }} joyfully invite <br> The {{group_name}} <br> to their wedding celebration</p>
+						<div class="fancyText">
+							<p>{{ partner_1.first_name }} and {{ partner_2.first_name }} joyfully invite </p>
+							<!-- <br>  -->
+							<p class="fancyText inviteeName"> The {{group_name}} </p>
+							<!-- <br>  -->
+							<p>to their wedding celebration</p>
+						</div>
 						
 			<div class="imgDivider">
 				<img src="https://i.imgur.com/TJI5yIz.png">
@@ -142,20 +150,6 @@
 			</div>
 			<div class="sectionDivider"></div>
 			<div class="d-flex flex-column align-items-center px-4">
-				<!-- <p class="fancyText sectionDivider">
-					{{ group_name }} is formally invited <br> to the wedding of Teodora and Pietro
-				</p> -->
-				<!-- <p class="fancyText sectionDivider">
-				Please RSVP below
-			</p> -->
-
-				<!-- Commented out invitee names below, should they stay? -->
-
-				<!-- <div class="d-flex flex-column align-items-center" style="width: 100%;">
-				{% for guest in invitation_guests %}
-					<p class="fancyText inviteeName" >{{ guest }}</p>
-				{% endfor %}
-			</div> -->
 			<div class="imgDivider">
 				<img src="https://i.imgur.com/bJ0ZU1o.png">
 			</div>

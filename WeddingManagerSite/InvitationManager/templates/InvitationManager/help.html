@@ -61,7 +61,10 @@
 
 		.formContainerStyle {
 			box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-			padding: 30px;
+			padding-top: 30px;
+			padding-bottom: 30px;
+			padding-left: 10vw;
+			padding-right: 10vw;
 			height: 85vh;
 			min-height: 600px;
 			display: flex;
@@ -148,7 +151,9 @@
 		</div>
 		<div class="invBody d-flex flex-column h-100">
 			<div class="formContainerStyle">
-				<h1>FAQ</h1>
+				<div style="display: flex; flex-direction: row; justify-content: center;">
+					<h1 class="fancyText" style="font-size: 3.5vh;">FAQ</h1>
+				</div>
 				<br>
 				<div class="qContainer">
 					<h3>How do I RSVP?</h3>
@@ -157,30 +162,33 @@
 						This link should've been sent to you via email, facebook message or text.
 						If you cannot find your invitation link, please send us an email by clicking the button below.
 					</p>
+					<br>
 					<div style="display: flex; flex-direction: column; align-items: center;">
 						<a class="toRSVPLink" href="{% url 'InvitationManager:contact_us' %}">
-						<button type="button" class="btn btn-light mailButton">
-							<span class="material-symbols-outlined" style="padding-right: 2px;">
-								mail
-							</span>
-							Contact Us
-						</button>
-					</a>
+							<button type="button" class="btn btn-light mailButton">
+								<span class="material-symbols-outlined" style="padding-right: 2px;">
+									mail
+								</span>
+								Contact Us
+							</button>
+						</a>
 					</div>
 				</div>
 				<div class="qContainer">
 					<h3>I can't find my invitation link, what do I do?</h3>
 					<p>
-						That's OK! We can help you get your link and RSVP. Please contact us by clicking the "Contact Us" button below.
+						That's OK! We can help you get your link and RSVP. Please contact us by clicking the "Contact
+						Us" button below.
 					</p>
+					<br>
 					<div style="display: flex; flex-direction: column; align-items: center;">
 						<a class="toRSVPLink" href="{% url 'InvitationManager:contact_us' %}">
-						<button type="button" class="btn btn-light mailButton">
-							<span class="material-symbols-outlined" style="padding-right: 2px;">
-								mail
-							</span>
-							Contact Us
-						</button>
+							<button type="button" class="btn btn-light mailButton">
+								<span class="material-symbols-outlined" style="padding-right: 2px;">
+									mail
+								</span>
+								Contact Us
+							</button>
 						</a>
 					</div>
 				</div>
@@ -189,14 +197,15 @@
 					<p>
 						Feel free to contact us for help!
 					</p>
+					<br>
 					<div style="display: flex; flex-direction: column; align-items: center;">
 						<a class="toRSVPLink" href="{% url 'InvitationManager:contact_us' %}">
-						<button type="button" class="btn btn-light mailButton">
-							<span class="material-symbols-outlined" style="padding-right: 2px;">
-								mail
-							</span>
-							Contact Us
-						</button>
+							<button type="button" class="btn btn-light mailButton">
+								<span class="material-symbols-outlined" style="padding-right: 2px;">
+									mail
+								</span>
+								Contact Us
+							</button>
 						</a>
 					</div>
 				</div>
