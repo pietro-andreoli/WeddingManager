@@ -214,13 +214,18 @@ class InvitationHomepage(View):
 		# guests = InvitationModels.Guest.objects.filter(assoc_group=temp_group)
 
 		invitation_context = {
-			"wedding_date": details.event_start_timestamp.strftime("%b %d, %Y"),
-			"wedding_time": details.event_start_timestamp.strftime("%I:%M:%S %p %Z"),
+			"wedding_date": "{dt:%B} {dt.day}, {dt.year}".format(dt=details.event_start_timestamp),
+			"wedding_time": "{hr}:{dt:%M} {m} {tz}".format(
+				dt=details.event_start_timestamp, 
+				hr=event_details.hour24_as_hour12(details.event_start_timestamp.hour),
+				m='AM' if details.event_start_timestamp.hour < 12 else 'PM',
+				tz=details.event_tz_short
+			),
 			"venue_name": details.venue_name,
 			"venue_address": details.venue_address,
 			"group_name": invitation.invitation_name,
 			"invitation_guests": [guest.get_full_name() for guest in guests],
-			"reply_deadline": details.reply_deadline.strftime("%Y-%m-%d %I:%M:%S %p %Z"),
+			"reply_deadline": "{dt:%B} {dt.day}, {dt.year}".format(dt=details.reply_deadline),
 			"invitation_url_id": invitation_id,
 			"partner_1": details.partner_1,
 			"partner_2": details.partner_2

@@ -131,6 +131,7 @@ class Config(models.Model):
 	)
 	event_date = models.DateTimeField(null=True, help_text="In local timezone")
 	event_date_tz = models.CharField(null=True, max_length=64)
+	event_date_tz_short = models.CharField(null=True, max_length=8, help_text="EST, PST, etc")
 	venue_addr = models.CharField(null=True, max_length=512)
 	venue_name = models.CharField(null=True, max_length=128)
 	venue_google_map_link = models.URLField(

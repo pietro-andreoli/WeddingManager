@@ -94,6 +94,7 @@ class EventDetails():
 		self.reception_timestamp: datetime = convert_utc_to_curr_timezone(self.config_model.reception_timestamp)
 		self.reception_location_name: str = self.config_model.reception_location_name
 		self.reception_location_addr: str = self.config_model.reception_location_addr
+		self.event_tz_short: str = self.config_model.event_date_tz_short
 	
 	@property
 	def event_time(self):
