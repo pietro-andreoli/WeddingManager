@@ -268,7 +268,7 @@
 														<div class="fieldTitle" style="display: flex;">
 															<label class="attendingLabel"
 																for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}">Is
-																Attending</label>
+																attending</label>
 															<input class="form-check-input" type="radio"
 																id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
 																name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
@@ -279,7 +279,7 @@
 														<div class="fieldTitle" style="display: flex;">
 															<label
 																for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_NOT">Is
-																Not Attending</label>
+																not attending</label>
 															<input class="form-check-input" type="radio"
 																id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_NOT"
 																name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
@@ -331,12 +331,12 @@
 			if (display) {
 				e.classList.remove("bg-danger");
 				e.classList.add("bg-success");
-				e.innerHTML = "Attending";
+				e.innerHTML = "attending";
 			}
 			else {
 				e.classList.remove("bg-success");
 				e.classList.add("bg-danger");
-				e.innerHTML = "Not Attending";
+				e.innerHTML = "not attending";
 			}
 		}
 
