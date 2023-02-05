@@ -72,7 +72,9 @@ def load_env_vars(fp):
 	try:
 		return {
 			"environment": os.environ["environment"],
-			"debug": os.environ["debug"]
+			"debug": os.environ["debug"],
+			"database_user": os.environ["database_user"],
+			"database_password": os.environ["database_password"],
 		}
 		
 		print("Environment variables successfully loaded from os.environ")
@@ -150,8 +152,8 @@ DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.mysql',
         'NAME': 'InvitationManager',
-        'USER': 'root',
-        'PASSWORD': 'password',
+        'USER': ENVIRONMENT_VARIABLES["database_user"],
+        'PASSWORD': ENVIRONMENT_VARIABLES["database_password"],
         'HOST':'localhost',
         'PORT':'3306',
 	}
