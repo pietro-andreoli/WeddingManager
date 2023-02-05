@@ -72,7 +72,9 @@ def load_env_vars(fp):
 	try:
 		return {
 			"environment": os.environ["environment"],
-			"debug": os.environ["debug"]
+			"debug": os.environ["debug"],
+			"database_user": os.environ["database_user"],
+			"database_password": os.environ["database_password"],
 		}
 		
 		print("Environment variables successfully loaded from os.environ")
@@ -148,17 +150,21 @@ MAX_CONN_AGE = 600
 
 DATABASES = {
 	'default': {
-		'ENGINE': 'django.db.backends.sqlite3',
-		'NAME': BASE_DIR / 'db.sqlite3',
+		'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'InvitationManager',
+        'USER': ENVIRONMENT_VARIABLES["database_user"],
+        'PASSWORD': ENVIRONMENT_VARIABLES["database_password"],
+        'HOST':'localhost',
+        'PORT':'3306',
 	}
 }
 
-if "DATABASE_URL" in os.environ:
-	# Configure Django for DATABASE_URL environment variable.
-	DATABASES["default"] = dj_database_url.config(
-		conn_max_age=MAX_CONN_AGE, 
-		ssl_require=True
-	)
+# if "DATABASE_URL" in os.environ:
+# 	# Configure Django for DATABASE_URL environment variable.
+# 	DATABASES["default"] = dj_database_url.config(
+# 		conn_max_age=MAX_CONN_AGE, 
+# 		ssl_require=True
+# 	)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
