@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import json
+import pymysql
+pymysql.install_as_MySQLdb()
+import MySQLdb
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -152,7 +155,7 @@ MAX_CONN_AGE = 600
 
 DATABASES = {
 	'default': {
-		'ENGINE': 'mysql.connector.django',
+		'ENGINE': 'django.db.backends.mysql',
         'NAME': 'InvitationManager',
         'USER': ENVIRONMENT_VARIABLES["database_user"],
         'PASSWORD': ENVIRONMENT_VARIABLES["database_password"],
