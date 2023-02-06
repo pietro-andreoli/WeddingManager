@@ -133,14 +133,18 @@
 							<p>{{ partner_1.first_name }} and {{ partner_2.first_name }} joyfully invite </p>
 							<!-- <br>  -->
 							<p class="fancyText inviteeName"> 
-								{% for name in invitation_guests %} 
-									{% if forloop.counter == invitation_guests|length %}
-										and <br>
-										{{ name }}
-									{% else %}
-										{{ name }},<br>
-									{% endif %}
-								{% endfor %}
+								{% if invitation_guests|length == 1 %}
+									{{ invitation_guests.0 }}
+								{% else %}
+									{% for name in invitation_guests %} 
+										{% if forloop.counter == invitation_guests|length %}
+											and <br>
+											{{ name }}
+										{% else %}
+											{{ name }},<br>
+										{% endif %}
+									{% endfor %}
+								{% endif %}
 							</p>
 							<!-- <br>  -->
 							<p>to their wedding celebration</p>
