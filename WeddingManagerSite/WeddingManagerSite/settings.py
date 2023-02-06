@@ -149,7 +149,7 @@ MAX_CONN_AGE = 600
 
 DATABASES = {
 	'default': {
-		'ENGINE': 'django.db.backends.mysql',
+		'ENGINE': 'mysql.connector.django',
         'NAME': 'InvitationManager',
         'USER': ENVIRONMENT_VARIABLES["database_user"],
         'PASSWORD': ENVIRONMENT_VARIABLES["database_password"],
