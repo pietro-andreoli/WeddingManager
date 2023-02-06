@@ -89,8 +89,11 @@ ENVIRONMENT_VARIABLES = load_env_vars(gen_env_vars_fp())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ENVIRONMENT_VARIABLES["debug"] == "true"
 
+web_domain = ENVIRONMENT_VARIABLES["web_domain"]
+print("Current Web Domain: " + web_domain)
+
 ALLOWED_HOSTS = [
-	ENVIRONMENT_VARIABLES["web_domain"],
+	web_domain,
 	"127.0.0.1"
 ]
 
@@ -157,6 +160,8 @@ DATABASES = {
         'PORT':'3306',
 	}
 }
+
+print("Database details: " + json.dumps(DATABASES, indent=3))
 
 # if "DATABASE_URL" in os.environ:
 # 	# Configure Django for DATABASE_URL environment variable.
