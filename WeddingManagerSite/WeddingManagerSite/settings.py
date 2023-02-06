@@ -90,7 +90,7 @@ ENVIRONMENT_VARIABLES = load_env_vars(gen_env_vars_fp())
 DEBUG = ENVIRONMENT_VARIABLES["debug"] == "true"
 
 ALLOWED_HOSTS = [
-	"wedding-wizard.herokuapp.com",
+	"peterandteawedding.com",
 	"127.0.0.1"
 ]
 
