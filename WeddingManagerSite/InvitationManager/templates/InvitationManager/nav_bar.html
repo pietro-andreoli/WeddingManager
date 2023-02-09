@@ -159,11 +159,11 @@
 			<ul class="navbar-nav mr-auto">
 				{% if invitation_url_id %}
 					<li class="nav-item">
-						<a class="nav-link {% if 'invitation' in request.path_info %}active{% endif %}" href="{% url 'InvitationManager:invitation_endpoint' invitation_url_id %}">Home<span class="sr-only">(current)</span></a>
+						<a class="nav-link {% if 'invitation' in request.path_info %}active{% endif %}" href="{% url 'InvitationManager:invitation_endpoint' invitation_url_id %}">Your Invitation<span class="sr-only">(current)</span></a>
 					</li>
 				{% else %}
 					<li class="nav-item">
-						<a class="nav-link {% if 'invitation' in request.path_info %}active{% endif %}" href="{% url 'InvitationManager:invalid_invitation_endpoint' %}">Home<span class="sr-only">(current)</span></a>
+						<a class="nav-link {% if 'invitation' in request.path_info %}active{% endif %}" href="{% url 'InvitationManager:invalid_invitation_endpoint' %}">Your Invitation<span class="sr-only">(current)</span></a>
 					</li>
 				{% endif %}
 				
