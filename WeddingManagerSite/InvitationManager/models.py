@@ -167,3 +167,10 @@ class Config(models.Model):
 	reception_timestamp = models.DateTimeField(null=True, help_text="In local timezone")
 	reception_location_name = models.CharField(null=True, max_length=128)
 	reception_location_addr = models.CharField(null=True, max_length=256)
+
+class LogEvent(models.Model):
+	timestamp = models.DateTimeField(auto_now_add=True)
+	level = models.CharField(max_length=32)
+	category = models.CharField(max_length=32)
+	related_inv = models.ForeignKey(Invitation, null=True, on_delete=models.SET_NULL)
+	message = models.TextField()

@@ -20,7 +20,7 @@ from .forms import ImportGuestsForm, RSVPSubform
 
 
 def index(request):
-	return render(request, "InvitationManager/coming_soon.html")
+	return render(request, "InvitationManager/missing_invitation.html")
 
 def help_page(request):
 	context = {}
