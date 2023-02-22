@@ -10,7 +10,7 @@ admin.site.register(Config)
 # @admin.site.register(RSVP)
 class RSVPAdmin(admin.ModelAdmin):
 	model = RSVP
-	list_display = ("rsvp_id", "is_attending", "is_vegan", "view_rsvp_owner")
+	list_display = ("view_rsvp_owner", "is_attending_ceremony", "is_attending", "is_vegan")
 
 	def view_rsvp_owner(self, obj):
 		return Guest.objects.get(rsvp=obj)

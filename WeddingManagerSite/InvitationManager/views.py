@@ -286,8 +286,11 @@ class RSVPFormView(View):
 	RSVP_SUCCESS_TEMPLATE_PATH = "InvitationManager/rsvp_success.html"
 
 	ATTENDING_RB_TAG_NAME = "is_attending"
+	ATTENDING_CEREMONY_RB_TAG_NAME = "is_attending_ceremony"
 	IS_ATTENDING_RB_TAG_VALUE = "true"
+	IS_ATTENDING_CEREMONY_RB_TAG_VALUE = "true"
 	IS_NOT_ATTENDING_RB_TAG_VALUE = "false"
+	IS_NOT_ATTENDING_CEREMONY_RB_TAG_VALUE = "false"
 	IS_VEGAN_CB_TAG_NAME = "is_vegan"
 	IS_VEGAN_CB_TAG_VALUE = "true"
 	TAG_NAME_DELIMETER = "__"
@@ -337,9 +340,11 @@ class RSVPFormView(View):
 
 			# Get form input as dict
 			is_attending = get_form_value(guest, RSVPFormView.ATTENDING_RB_TAG_NAME)
+			is_attending_ceremony = get_form_value(guest, RSVPFormView.ATTENDING_CEREMONY_RB_TAG_NAME)
 			guest_form_dict = {
 				"is_attending": is_attending == RSVPFormView.IS_ATTENDING_RB_TAG_VALUE if is_attending is not None else None,
-				"is_vegan": get_form_value(guest, RSVPFormView.IS_VEGAN_CB_TAG_NAME)
+				"is_vegan": get_form_value(guest, RSVPFormView.IS_VEGAN_CB_TAG_NAME),
+				"is_attending_ceremony": is_attending_ceremony == RSVPFormView.IS_ATTENDING_CEREMONY_RB_TAG_VALUE if is_attending_ceremony is not None else None,
 			}
 
 			# Create form object using instance and form input
@@ -374,10 +379,13 @@ class RSVPFormView(View):
 			"form": form,
 			"invitees": inv.get_all_guests(),
 			"ATTENDING_RB_TAG_NAME": RSVPFormView.ATTENDING_RB_TAG_NAME,
+			"ATTENDING_CEREMONY_RB_TAG_NAME": RSVPFormView.ATTENDING_CEREMONY_RB_TAG_NAME,
 			"IS_VEGAN_CB_TAG_NAME": RSVPFormView.IS_VEGAN_CB_TAG_NAME,
 			"IS_VEGAN_CB_TAG_VALUE": RSVPFormView.IS_VEGAN_CB_TAG_VALUE,
 			"IS_NOT_ATTENDING_RB_TAG_VALUE": RSVPFormView.IS_NOT_ATTENDING_RB_TAG_VALUE,
+			"IS_NOT_ATTENDING_CEREMONY_RB_TAG_VALUE": RSVPFormView.IS_NOT_ATTENDING_CEREMONY_RB_TAG_VALUE,
 			"IS_ATTENDING_RB_TAG_VALUE": RSVPFormView.IS_ATTENDING_RB_TAG_VALUE,
+			"IS_ATTENDING_CEREMONY_RB_TAG_VALUE": RSVPFormView.IS_ATTENDING_CEREMONY_RB_TAG_VALUE,
 			"TAG_NAME_DELIMETER": RSVPFormView.TAG_NAME_DELIMETER,
 			"wedding_date": details.event_start_timestamp.strftime("%b %d, %Y"),
 			"wedding_time": details.event_start_timestamp.strftime("%I:%M %p"),

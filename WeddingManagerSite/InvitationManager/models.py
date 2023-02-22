@@ -82,10 +82,10 @@ class RSVP(models.Model):
 	FOOD_CHOICES = Food.options
 
 	rsvp_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-	# Is attending reception
-	is_attending = models.BooleanField(default=False, null=True)
 	# Is attending ceremony
 	is_attending_ceremony = models.BooleanField(default=False, null=True)
+	# Is attending reception
+	is_attending = models.BooleanField(default=False, null=True)
 	is_vegan = models.BooleanField(default=False)
 
 class Guest(models.Model):
