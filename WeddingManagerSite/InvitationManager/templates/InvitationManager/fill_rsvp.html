@@ -249,22 +249,74 @@
 												<div>
 													{% for person in invitees %}
 													<div class="personCard">
-														<div>{{ person.first_name }} {{ person.last_name }}</div>
+														<div><b>{{ person.first_name }} {{ person.last_name }}</b></div>
+														
+														<!-- <div class="fieldTitle" style="display: flex;">
+															<label class="attendingCeremonyLabel"
+																for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}">Is
+																attending</label>
+															<input class="form-check-input" type="radio"
+																id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
+																name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}"
+																value="{{ IS_ATTENDING_RB_TAG_VALUE }}" onclick="toggle_badge(
+															'{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_BADGE',
+															true)" required>
+														</div> -->
 														<div>
-															<span
-																id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_BADGE"
+															<div>
+																Ceremony
+																<!--<span
+																	id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_CEREMONY_RB_TAG_NAME }}_BADGE"
+																	class="badge rounded-pill bg-success" ,
+																	style="visibility: hidden;">Success</span>
+																<span
+																	id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_CEREMONY_RB_TAG_NAME }}_VEGAN_BADGE"
+																	class="badge rounded-pill bg-info text-dark" ,
+																	style="visibility: hidden;">
+																	<span class="material-icons" style="font-size: 10px;">
+																		spa
+																	</span>
+																	Vegan
+																</span>-->
+																<div class="fieldTitle" style="display: flex;">
+																	<label class="attendingLabel"
+																		for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_CEREMONY_RB_TAG_NAME }}">Is
+																		attending</label>
+																	<input class="form-check-input" type="radio"
+																		id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_CEREMONY_RB_TAG_NAME }}"
+																		name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_CEREMONY_RB_TAG_NAME }}"
+																		value="{{ IS_ATTENDING_RB_TAG_VALUE }}" onclick="toggle_badge(
+																	'{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_CEREMONY_RB_TAG_NAME }}_BADGE',
+																	true)" required>
+																</div>
+																<div class="fieldTitle" style="display: flex;">
+																	<label
+																		for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_CEREMONY_RB_TAG_NAME }}_NOT">Is
+																		not attending</label>
+																	<input class="form-check-input" type="radio"
+																		id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_CEREMONY_RB_TAG_NAME }}_NOT"
+																		name="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_CEREMONY_RB_TAG_NAME }}"
+																		value="{{ IS_NOT_ATTENDING_RB_TAG_VALUE }}" onclick="toggle_badge(
+																	'{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_CEREMONY_RB_TAG_NAME }}_BADGE',
+																	false)" required>
+																</div>
+															</div>
+														<div>
+														Reception
+															<!--<span
+																id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_CEREMONY_RB_TAG_NAME }}_BADGE"
 																class="badge rounded-pill bg-success" ,
 																style="visibility: hidden;">Success</span>
 															<span
-																id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_VEGAN_BADGE"
+																id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_CEREMONY_RB_TAG_NAME }}_VEGAN_BADGE"
 																class="badge rounded-pill bg-info text-dark" ,
 																style="visibility: hidden;">
 																<span class="material-icons" style="font-size: 10px;">
 																	spa
 																</span>
 																Vegan
-															</span>
-														</div>
+															</span>-->
+														</div> 
 														<div class="fieldTitle" style="display: flex;">
 															<label class="attendingLabel"
 																for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}">Is
@@ -287,6 +339,7 @@
 															'{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ ATTENDING_RB_TAG_NAME }}_BADGE',
 															false)" required>
 														</div>
+													</div>
 														<div class="fieldTitle" style="display: flex;">
 															<label
 																for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ IS_VEGAN_CB_TAG_NAME }}">
