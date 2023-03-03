@@ -1,6 +1,24 @@
 from django.db import models
 import uuid
 from .configs import Food
+import logging
+
+
+# create a logger instance
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# create a file handler and set its level to INFO
+file_handler = logging.FileHandler("django_app.log")
+file_handler.setLevel(logging.INFO)
+
+# create a formatter and set it for the file handler
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+
+# add the file handler to the logger
+logger.addHandler(file_handler)
+
 
 class Guest_Relation(models.Model):
 	relation_en = models.CharField(max_length=32, primary_key=True)
@@ -82,6 +100,9 @@ class RSVP(models.Model):
 	FOOD_CHOICES = Food.options
 
 	rsvp_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+	# Is attending ceremony
+	is_attending_ceremony = models.BooleanField(default=False, null=True)
+	# Is attending reception
 	is_attending = models.BooleanField(default=False, null=True)
 	is_vegan = models.BooleanField(default=False)
 
@@ -164,3 +185,44 @@ class Config(models.Model):
 	reception_timestamp = models.DateTimeField(null=True, help_text="In local timezone")
 	reception_location_name = models.CharField(null=True, max_length=128)
 	reception_location_addr = models.CharField(null=True, max_length=256)
+
+class LogEvent(models.Model):
+	timestamp = models.DateTimeField(auto_now_add=True)
+	level = models.CharField(max_length=32)
+	category = models.CharField(max_length=32)
+	related_inv = models.ForeignKey(Invitation, null=True, on_delete=models.SET_NULL)
+	message = models.TextField()
+
+	def log(level: str, category: str, message: str, related_inv: Invitation):
+		try:
+			if level == "error":
+				logger.error(
+					f"Category: {category} - Message: {message} - Inv: {related_inv.invitation_id if related_inv is not None else None}"
+				)
+			else:
+				logger.info(
+					f"Category: {category} - Message: {message} - Inv: {related_inv.invitation_id if related_inv is not None else None}"
+				)
+			evt = LogEvent(
+				level=level,
+				category=category,
+				related_inv=related_inv,
+				message=message
+			).save()
+		except BaseException as err:
+			logger.fatal(f"error logging the following - level: {level} - category: {category} - message: {message} - InvitationObject: {related_inv}")
+
+	def log_get_invitation_by_url_id(level: str, category: str, message: str, related_inv: Invitation):
+		LogEvent.log(level, category, message, related_inv)
+
+	def log_help_page_visit(level: str, category: str, message: str, related_inv: Invitation):
+		LogEvent.log(level, category, message, related_inv)
+
+	def log_location_page_visit(level: str, category: str, message: str, related_inv_url_id: str):
+		LogEvent.log(level, category, message, Invitation.objects.get(invitation_url_id=related_inv_url_id))
+
+	def log_contact_us_page_visit(level: str, category: str, message: str, related_inv_url_id: str):
+		LogEvent.log(level, category, message, Invitation.objects.get(invitation_url_id=related_inv_url_id))
+
+	def log_info_page_visit(level: str, category: str, message: str, related_inv_url_id: str):
+		LogEvent.log(level, category, message, Invitation.objects.get(invitation_url_id=related_inv_url_id))

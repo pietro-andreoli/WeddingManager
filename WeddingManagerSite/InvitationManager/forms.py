@@ -18,7 +18,7 @@ class RSVPForm(forms.ModelForm):
 
 	class Meta:
 		model = RSVP
-		fields = ["is_attending", "is_vegan"]
+		fields = ["is_attending", "is_vegan", "is_attending_ceremony"]
 
 
 class RSVPSubform(forms.ModelForm):
