@@ -18,6 +18,38 @@ from InvitationManager import event_details
 from . import models as InvitationModels
 from .forms import ImportGuestsForm, RSVPSubform
 
+def get_invitation_by_url_id(url_id) -> InvitationModels.Invitation:
+		"""
+		Gets the Invitation object associated with this URL ID.
+		If there is no Invitation associated with this URL, raises ObjectDoesNotExist exception.
+
+		Args:
+			url_id (str): URL ID of the invitation. Should come from InvitationModels.Invitation.invitation_url_id.
+
+		Raises:
+			django_exceptions.ObjectDoesNotExist: Raised if no Invitation was found for this URL ID.
+
+		Returns:
+			InvitationModels.Invitation: The invitation associated with this URL ID.
+		"""
+
+		try:
+			invitation = InvitationModels.Invitation.objects.get(invitation_url_id=url_id)
+			if invitation is None:
+				raise django_exceptions.ObjectDoesNotExist()
+			return invitation
+		# This is raised when the url_id does not match a single invitation.
+		except django_exceptions.ObjectDoesNotExist as no_inv_error:
+			print("Invitation could not be found!")
+			InvitationModels.LogEvent.log_get_invitation_by_url_id(
+				"error",
+				"func_call",
+				f"URL ID could not be found: {url_id}",
+				None
+			)
+			raise no_inv_error
+		except Exception as err:
+			print(str(err))
 
 def index(request):
 	return render(request, "InvitationManager/missing_invitation.html")
@@ -26,10 +58,23 @@ def help_page(request):
 	context = {}
 	if "invitation_url_id" in request.session:
 		context["invitation_url_id"] = request.session["invitation_url_id"]
+	InvitationModels.LogEvent.log_help_page_visit(
+		"info",
+		"page_visit",
+		"Help page",
+		None if "invitation_url_id" not in context else get_invitation_by_url_id(context["invitation_url_id"])
+	)
+
 	return render(request, "InvitationManager/help.html", context)
 
 def missing_invitation(request):
-	return  render(request, "InvitationManager/missing_invitation.html")
+	InvitationModels.LogEvent.log(
+		"info",
+		"page_visit",
+		"Missing invitation page",
+		None
+	)
+	return render(request, "InvitationManager/missing_invitation.html")
 
 def location_page(request: HttpRequest):
 	from .event_details import EventDetails
@@ -42,6 +87,13 @@ def location_page(request: HttpRequest):
 	}
 	if "invitation_url_id" in request.session:
 		context["invitation_url_id"] = request.session["invitation_url_id"]
+	
+	InvitationModels.LogEvent.log_location_page_visit(
+		"info",
+		"page_visit",
+		"Location page",
+		context["invitation_url_id"] if "invitation_url_id" in context else None
+	)
 	return render(request, "InvitationManager/location.html", context)
 
 def contact_us_page(request: HttpRequest):
@@ -58,6 +110,12 @@ def contact_us_page(request: HttpRequest):
 	}
 	if "invitation_url_id" in request.session:
 		context["invitation_url_id"] = request.session["invitation_url_id"]
+	InvitationModels.LogEvent.log_contact_us_page_visit(
+		"info",
+		"page_visit",
+		"Contact us page",
+		context["invitation_url_id"] if "invitation_url_id" in context else None
+	)
 	return render(request, "InvitationManager/contact_us.html", context)
 
 def info_page(request: HttpRequest):
@@ -81,6 +139,12 @@ def info_page(request: HttpRequest):
 	}
 	if "invitation_url_id" in request.session:
 		context["invitation_url_id"] = request.session["invitation_url_id"]
+	InvitationModels.LogEvent.log_info_page_visit(
+		"info",
+		"page_visit",
+		"Info page",
+		context["invitation_url_id"] if "invitation_url_id" in context else None
+	)
 	return render(request, "InvitationManager/event_info.html", context)
 
 @method_decorator(staff_member_required, name="dispatch")
@@ -213,6 +277,13 @@ class InvitationHomepage(View):
 		# temp_group = InvitationModels.Group.objects.get(group_label="Tea's Family")
 		# guests = InvitationModels.Guest.objects.filter(assoc_group=temp_group)
 
+		InvitationModels.LogEvent.log(
+			"info",
+			"page_visit",
+			"Home page GET",
+			invitation
+		)
+
 		invitation_context = {
 			"wedding_date": "{dt:%B} {dt.day}, {dt.year}".format(dt=details.event_start_timestamp),
 			"wedding_time": "{hr}:{dt:%M} {m} {tz}".format(
@@ -250,6 +321,13 @@ class InvitationHomepage(View):
 			# Redirect to the GET version of this page, as the payload seems to be missing required headers.
 			return self.get(request, invitation_id, args, kwargs)
 		print(InvitationHomepage.HomepageButtonOptions.as_str(selected_response))
+		
+		InvitationModels.LogEvent.log(
+			"info",
+			"page_visit",
+			"Home page POST",
+			invitation
+		)
 		return render(request, "InvitationManager/fill_invitation.html", context=None)
 
 	def get_invitation_by_url_id(self, url_id) -> InvitationModels.Invitation:
@@ -297,6 +375,13 @@ class RSVPFormView(View):
 
 	def get(self, request, invitation_id, *args, **kwargs):
 		inv = self.get_assoc_invitation(invitation_id)
+		
+		InvitationModels.LogEvent.log(
+			"info",
+			"page_visit",
+			"RSVP page GET",
+			inv
+		)
 		return self.render_form(request, inv)
 	
 	def post(self, request, invitation_id, *args, **kwargs):
@@ -328,6 +413,7 @@ class RSVPFormView(View):
 
 		# list of form, guest pairs
 		form_list = []
+		raw_response_list = []
 
 		# Loop through guests for this invitation
 		# Fill an individual RSVP form for each guest
@@ -346,6 +432,7 @@ class RSVPFormView(View):
 				"is_vegan": get_form_value(guest, RSVPFormView.IS_VEGAN_CB_TAG_NAME),
 				"is_attending_ceremony": is_attending_ceremony == RSVPFormView.IS_ATTENDING_CEREMONY_RB_TAG_VALUE if is_attending_ceremony is not None else None,
 			}
+			raw_response_list.append({ "guest": guest.guest_id, "raw_response": guest_form_dict})
 
 			# Create form object using instance and form input
 			# If no RSVP has been created yet for a guest, instance is set to None, creating a new RSVP object
@@ -361,6 +448,12 @@ class RSVPFormView(View):
 			guest.rsvp = form.instance
 			guest.save()
 		
+		InvitationModels.LogEvent.log(
+			"info",
+			"RSVP Submit",
+			f"Raw Response -> {raw_response_list}",
+			inv
+		)
 		# Render the form again.
 		return self.render_post_rsvp(request, inv)
 
