@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import RSVP, Guest, Group, Invitation, Guest_Relation, Config
+from .models import RSVP, Guest, Group, Invitation, Guest_Relation, Config, LogEvent
 
 admin.site.register(Guest)
 admin.site.register(Group)
@@ -18,4 +18,15 @@ class RSVPAdmin(admin.ModelAdmin):
 	view_rsvp_owner.short_description = "Owner"
 	view_rsvp_owner.admin_order_field = "guest__first_name"
 
+class LogEventAdmin(admin.ModelAdmin):
+	model = LogEvent
+	list_display = ("timestamp", "category", "related_inv", "message")
+
+	def related_inv(self, obj: LogEvent):
+		return obj.related_inv
+
+	related_inv.short_description = "Invitation Group"
+	related_inv.admin_order_field = "invitation__invitation_name"
+
 admin.site.register(RSVP, RSVPAdmin)
+admin.site.register(LogEvent, LogEventAdmin)
