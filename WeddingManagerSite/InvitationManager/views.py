@@ -138,7 +138,8 @@ def info_page(request: HttpRequest):
 			m='AM' if details.reception_timestamp.hour < 12 else 'PM'
 		),
 		"reception_location": details.reception_location_name,
-		"hotel_name": details.hotel_name
+		"hotel_name": details.hotel_name,
+		"hotel_url": details.hotel_url
 	}
 	if "invitation_url_id" in request.session:
 		context["invitation_url_id"] = request.session["invitation_url_id"]
