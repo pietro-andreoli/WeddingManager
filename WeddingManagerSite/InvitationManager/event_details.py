@@ -95,6 +95,8 @@ class EventDetails():
 		self.reception_location_name: str = self.config_model.reception_location_name
 		self.reception_location_addr: str = self.config_model.reception_location_addr
 		self.event_tz_short: str = self.config_model.event_date_tz_short
+		self.hotel_name: str = self.config_model.hotel_name
+		self.hotel_url: str = self.config_model.hotel_url
 	
 	@property
 	def event_time(self):
