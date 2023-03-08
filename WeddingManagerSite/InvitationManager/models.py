@@ -185,6 +185,8 @@ class Config(models.Model):
 	reception_timestamp = models.DateTimeField(null=True, help_text="In local timezone")
 	reception_location_name = models.CharField(null=True, max_length=128)
 	reception_location_addr = models.CharField(null=True, max_length=256)
+	hotel_name = models.CharField(null=True, max_length=128)
+	hotel_url = models.CharField(null=True, max_length=256)
 
 class LogEvent(models.Model):
 	timestamp = models.DateTimeField(auto_now_add=True)
@@ -219,10 +221,22 @@ class LogEvent(models.Model):
 		LogEvent.log(level, category, message, related_inv)
 
 	def log_location_page_visit(level: str, category: str, message: str, related_inv_url_id: str):
-		LogEvent.log(level, category, message, Invitation.objects.get(invitation_url_id=related_inv_url_id))
+		try:
+			inv = Invitation.objects.get(invitation_url_id=related_inv_url_id)
+		except:
+			inv = None
+		LogEvent.log(level, category, message, inv)
 
 	def log_contact_us_page_visit(level: str, category: str, message: str, related_inv_url_id: str):
-		LogEvent.log(level, category, message, Invitation.objects.get(invitation_url_id=related_inv_url_id))
+		try:
+			inv = Invitation.objects.get(invitation_url_id=related_inv_url_id)
+		except:
+			inv = None
+		LogEvent.log(level, category, message, inv)
 
 	def log_info_page_visit(level: str, category: str, message: str, related_inv_url_id: str):
-		LogEvent.log(level, category, message, Invitation.objects.get(invitation_url_id=related_inv_url_id))
+		try:
+			inv = Invitation.objects.get(invitation_url_id=related_inv_url_id)
+		except:
+			inv = None
+		LogEvent.log(level, category, message, inv)
