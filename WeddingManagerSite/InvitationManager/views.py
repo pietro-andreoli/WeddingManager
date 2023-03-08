@@ -108,13 +108,15 @@ def contact_us_page(request: HttpRequest):
 		]),
 		"help_email": details.help_email
 	}
+	invitation_url_id = None
 	if "invitation_url_id" in request.session:
 		context["invitation_url_id"] = request.session["invitation_url_id"]
+		invitation_url_id = request.session["invitation_url_id"]
 	InvitationModels.LogEvent.log_contact_us_page_visit(
 		"info",
 		"page_visit",
 		"Contact us page",
-		context["invitation_url_id"] if "invitation_url_id" in context else None
+		invitation_url_id
 	)
 	return render(request, "InvitationManager/contact_us.html", context)
 
