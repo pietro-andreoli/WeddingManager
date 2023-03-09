@@ -2,6 +2,7 @@ from django.db import models
 import uuid
 from .configs import Food
 import logging
+from datetime import datetime
 
 
 # create a logger instance
@@ -24,6 +25,8 @@ class Guest_Relation(models.Model):
 	relation_en = models.CharField(max_length=32, primary_key=True)
 	relation_mk = models.CharField(max_length=32, null=False)
 	relation_it = models.CharField(max_length=32, null=False)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return self.relation_en
@@ -36,6 +39,8 @@ class Invitation_Email(models.Model):
 	from_field = models.CharField(max_length=128, null=False)
 	subject_field = models.CharField(max_length=256, null=False)
 	body_field = models.TextField(null=False)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return self.email_id
@@ -72,12 +77,14 @@ class Invitation(models.Model):
 	# The most recent date the link has been clicked
 	seen_date = models.DateTimeField(null=True, blank=True)
 	assoc_email = models.ForeignKey(Invitation_Email, null=True, on_delete=models.SET_NULL, blank=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return self.invitation_name
 
 	def get_all_guests(self):
-		return Guest.objects.filter(assoc_invitation=self)
+		return Guest.objects.filter(assoc_invitation=self).order_by('created_at')
 
 	@staticmethod
 	def get_invitation_by_url_id(inv_url_id):
@@ -86,6 +93,8 @@ class Invitation(models.Model):
 class Group(models.Model):
 	group_label = models.CharField(primary_key=True, max_length=64, null=False, unique=True)
 	primary_contact = models.ForeignKey("Guest", null=True, on_delete=models.SET_NULL, blank=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return self.group_label
@@ -105,6 +114,8 @@ class RSVP(models.Model):
 	# Is attending reception
 	is_attending = models.BooleanField(default=False, null=True)
 	is_vegan = models.BooleanField(default=False)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 
 class Guest(models.Model):
 	# The options for the field whose_guest.
@@ -113,15 +124,16 @@ class Guest(models.Model):
 	# Tuple's 0th value is what will be stored in the database. Tuples 1st value is a label for readability.
 	WHOSE_GUEST_OPTION_DICT = {
 		"PETER": ("peter", "Peter's"),
-		"TEA": ("tea", "Teodora's")
+		"TEA": ("tea", "Teodora's"),
+		"OTHER": ("tea", "Teodora's")
 	}
 	WHOSE_GUEST_OPTIONS = list(WHOSE_GUEST_OPTION_DICT.values())
 
 	guest_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	first_name = models.CharField(max_length=16)
 	last_name = models.CharField(max_length=32)
-	relation = models.ForeignKey(Guest_Relation, null=True, on_delete=models.SET_NULL)
-	whose_guest = models.CharField(max_length=8, null=True, choices=WHOSE_GUEST_OPTIONS)
+	relation = models.ForeignKey(Guest_Relation, null=True, on_delete=models.SET_NULL, blank=True)
+	whose_guest = models.CharField(max_length=8, null=True, choices=WHOSE_GUEST_OPTIONS, blank=True)
 	home_address = models.CharField(max_length=128, null=True, blank=True)
 	phone_number = models.CharField(max_length=16, null=True, blank=True)
 	email = models.CharField(max_length=64, null=True, blank=True)
@@ -131,6 +143,8 @@ class Guest(models.Model):
 	assoc_invitation = models.ForeignKey(Invitation, null=True, on_delete=models.SET_NULL, blank=True)
 	is_attending = models.BooleanField(null=True, default=None)
 	rsvp = models.ForeignKey(RSVP, null=True, on_delete=models.SET_NULL, blank=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return self.first_name + " " + self.last_name
@@ -187,6 +201,9 @@ class Config(models.Model):
 	reception_location_addr = models.CharField(null=True, max_length=256)
 	hotel_name = models.CharField(null=True, max_length=128)
 	hotel_url = models.CharField(null=True, max_length=256)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+	website_url = models.CharField(max_length=128, null=True)
 
 class LogEvent(models.Model):
 	timestamp = models.DateTimeField(auto_now_add=True)

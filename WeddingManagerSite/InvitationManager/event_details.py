@@ -97,6 +97,7 @@ class EventDetails():
 		self.event_tz_short: str = self.config_model.event_date_tz_short
 		self.hotel_name: str = self.config_model.hotel_name
 		self.hotel_url: str = self.config_model.hotel_url
+		self.website_url: str = self.config_model.website_url
 	
 	@property
 	def event_time(self):
