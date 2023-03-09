@@ -1,13 +1,29 @@
 from django.contrib import admin
 
 from .models import RSVP, Guest, Group, Invitation, Guest_Relation, Config, LogEvent
+from . import event_details
+from django.urls import reverse
+from django.utils.html import format_html
 
 admin.site.register(Guest)
 admin.site.register(Group)
-admin.site.register(Invitation)
 admin.site.register(Guest_Relation)
 admin.site.register(Config)
 # @admin.site.register(RSVP)
+
+class InvitationAdmin(admin.ModelAdmin):
+	model = Invitation
+	list_display = ("invitation_id", "invitation_name", "created_at", 'inv_url')
+
+	def inv_url(self, obj: Invitation):
+		config = event_details.get_main_config()
+		return format_html(f"<a href='{config.website_url}{reverse('InvitationManager:invitation_endpoint', args=[obj.invitation_url_id])}' target='_blank'>{obj.invitation_url_id}</a>")
+	
+	inv_url.short_description = "Invitation URL"
+	inv_url.admin_order_field = "created_at"
+
+
+
 class RSVPAdmin(admin.ModelAdmin):
 	model = RSVP
 	list_display = ("view_rsvp_owner", "is_attending_ceremony", "is_attending", "is_vegan")
@@ -30,3 +46,4 @@ class LogEventAdmin(admin.ModelAdmin):
 
 admin.site.register(RSVP, RSVPAdmin)
 admin.site.register(LogEvent, LogEventAdmin)
+admin.site.register(Invitation, InvitationAdmin)

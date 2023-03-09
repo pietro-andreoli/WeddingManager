@@ -276,7 +276,7 @@ class InvitationHomepage(View):
 
 		#https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Home_page
 		details = EventDetails()
-		guests = InvitationModels.Guest.objects.filter(assoc_invitation=invitation)
+		guests = InvitationModels.Guest.objects.filter(assoc_invitation=invitation).order_by('created_at')
 		
 		# temp_group = InvitationModels.Group.objects.get(group_label="Tea's Family")
 		# guests = InvitationModels.Guest.objects.filter(assoc_group=temp_group)
