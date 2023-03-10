@@ -175,10 +175,7 @@
 
 
 			<div class="d-flex flex-column align-items-center submitContainer">
-				<button class="btn btn-light btn-lg toRSVP">
-					<a class="toRSVPLink fancyText"
-						href="{% url 'InvitationManager:rsvp' invitation_url_id %}">RSVP</a>
-				</button>
+					<button class="btn btn-light btn-lg toRSVP fancyText toRSVPLink" id="toRSVPButton">RSVP</button>
 			</div>
 		</div>
 
@@ -189,6 +186,12 @@
 		{% include "InvitationManager/footer.html" %}
 	</div>
 	</div>
+	<script>
+		const toRSVPButton = document.getElementById('toRSVPButton');
+		toRSVPButton.addEventListener('click', () => {
+			window.location.href = "{% url 'InvitationManager:rsvp' invitation_url_id %}";
+		});
+	</script>
 </body>
 
 </html>
