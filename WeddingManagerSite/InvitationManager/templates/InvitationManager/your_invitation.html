@@ -136,10 +136,12 @@
 								{% if invitation_guests|length == 1 %}
 									{{ invitation_guests.0 }}
 								{% else %}
-									{% for name in invitation_guests %} 
-										{% if forloop.counter == invitation_guests|length %}
+									{% for name in invitation_guests %}
+										{% if forloop.last %}
 											and <br>
-											{{ name }}
+											{{ name }} 
+										{% elif forloop.revcounter == 2 %}
+											{{ name }}<br>
 										{% else %}
 											{{ name }},<br>
 										{% endif %}
