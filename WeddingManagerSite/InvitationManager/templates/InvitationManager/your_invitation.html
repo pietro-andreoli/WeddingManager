@@ -136,10 +136,12 @@
 								{% if invitation_guests|length == 1 %}
 									{{ invitation_guests.0 }}
 								{% else %}
-									{% for name in invitation_guests %} 
-										{% if forloop.counter == invitation_guests|length %}
+									{% for name in invitation_guests %}
+										{% if forloop.last %}
 											and <br>
-											{{ name }}
+											{{ name }} 
+										{% elif forloop.revcounter == 2 %}
+											{{ name }}<br>
 										{% else %}
 											{{ name }},<br>
 										{% endif %}
@@ -151,7 +153,7 @@
 						</div>
 						
 			<div class="imgDivider">
-				<img src="https://i.imgur.com/TJI5yIz.png">
+				<img src="https://i.imgur.com/bJ0ZU1o.png">
 			</div>
 							<p class="fancyText">{{ wedding_date }}</p>
 						<p class="fancyText">{{ wedding_time }}</p>
@@ -175,10 +177,7 @@
 
 
 			<div class="d-flex flex-column align-items-center submitContainer">
-				<button class="btn btn-light btn-lg toRSVP">
-					<a class="toRSVPLink fancyText"
-						href="{% url 'InvitationManager:rsvp' invitation_url_id %}">RSVP</a>
-				</button>
+					<button class="btn btn-light btn-lg toRSVP fancyText toRSVPLink" id="toRSVPButton">RSVP</button>
 			</div>
 		</div>
 
@@ -189,6 +188,12 @@
 		{% include "InvitationManager/footer.html" %}
 	</div>
 	</div>
+	<script>
+		const toRSVPButton = document.getElementById('toRSVPButton');
+		toRSVPButton.addEventListener('click', () => {
+			window.location.href = "{% url 'InvitationManager:rsvp' invitation_url_id %}";
+		});
+	</script>
 </body>
 
 </html>

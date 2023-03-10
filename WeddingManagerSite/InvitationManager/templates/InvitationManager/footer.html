@@ -52,14 +52,12 @@
 		<!-- <span style="padding-right: 5px;">
 			Need help? Email us
 		</span> -->
-		<a class="toRSVPLink" href="{% url 'InvitationManager:contact_us' %}">
-			<button type="button" class="btn btn-light mailButton">
-				<span class="material-symbols-outlined" style="padding-right: 2px;">
-					mail
-				</span>
-				Contact Us
-			</button>
-		</a>
+		<button class="btn btn-light mailButton" onclick="location.href='{% url 'InvitationManager:contact_us' %}'">
+			<span class="material-symbols-outlined" style="padding-right: 2px;">
+				mail
+			</span>
+			Contact Us
+		</button>
 	</div>
 </body>
 
