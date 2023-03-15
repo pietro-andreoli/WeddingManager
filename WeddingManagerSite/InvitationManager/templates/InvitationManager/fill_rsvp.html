@@ -11,6 +11,8 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 			  rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Charm&family=Mea+Culpa&family=Parisienne&display=swap"
+		rel="stylesheet">
 		<!-- Add additional CSS in static file -->
 		{% comment %} {% load templates %}
 		<link rel="stylesheet"
@@ -130,7 +132,7 @@
 			justify-content: space-between;
 			display: flex;
 			align-items: center;
-			font: normal normal normal 35px/43px didot-w01-italic, didot-w05-italic, serif;
+			font: normal normal normal 35px/43px 'Charm', cursive;
 			color: rgb(94, 92, 92)
 		}
 
@@ -183,6 +185,13 @@
 				flex-direction: column-reverse
 			}
 		}
+
+		
+		.fancyText {
+			font: normal normal normal 30px/1.4em 'Charm', cursive;
+			/* font-family: ; */
+			text-align: center;
+		}
 	
 		</style>
 	</head>
@@ -207,15 +216,16 @@
 												justify-content: space-between;
 												align-items: center">
 										<div style="width: 100%; flex-grow: 1;">
-											<div style="font: normal normal normal 30px/1.4em Garamond, serif;">The Wedding</div>
+											<div class="fancyText">The Wedding</div>
 											<div style="height: 1px;
 														margin: 20px 0;
 														opacity: .1;
 														background-color: rgb(255, 253, 252)"></div>
 											<div style="font: normal normal normal 15px/1.4em avenir-lt-w01_35-light1475496,avenir-lt-w05_35-light,sans-serif;
-														font-size: 14px !important">
-												<div>{{ wedding_date }}, {{ wedding_time }}</div>
-												<div>{{ venue_name }}</div>
+														font-size: 15px !important; display: flex; flex-direction: column; align-items: center;">
+												<div>{{ wedding_date }}</div>
+												<div>Ceremony: {{ ceremony_time }}</div>
+												<div>Reception: {{ reception_time }}</div>
 											</div>
 										</div>
 									</div>
@@ -233,7 +243,7 @@
 													<div>
 														{% for person in invitees %}
 															<div class="personCard">
-																<div>
+																<div style="font-size: 17px">
 																	<b>{{ person.first_name }} {{ person.last_name }}</b>
 																</div>
 																<!-- <div class="fieldTitle" style="display: flex;">
@@ -314,7 +324,7 @@
 																	</div>
 																</div>
 																<div class="fieldTitle" style="display: flex;">
-																	<label for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ IS_VEGAN_CB_TAG_NAME }}">Vegan</label>
+																	<label for="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ IS_VEGAN_CB_TAG_NAME }}">Has Dietary Restriction</label>
 																	<input class="form-check-input"
 																		   type="checkbox"
 																		   id="{{ person.guest_id }}{{ TAG_NAME_DELIMETER }}{{ IS_VEGAN_CB_TAG_NAME }}"

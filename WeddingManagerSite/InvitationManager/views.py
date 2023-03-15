@@ -485,7 +485,8 @@ class RSVPFormView(View):
 			"IS_ATTENDING_CEREMONY_RB_TAG_VALUE": RSVPFormView.IS_ATTENDING_CEREMONY_RB_TAG_VALUE,
 			"TAG_NAME_DELIMETER": RSVPFormView.TAG_NAME_DELIMETER,
 			"wedding_date": details.event_start_timestamp.strftime("%b %d, %Y"),
-			"wedding_time": details.event_start_timestamp.strftime("%I:%M %p"),
+			"ceremony_time": details.ceremony_timestamp.strftime("%#I:%M %p"),
+			"reception_time": details.reception_timestamp.strftime("%#I:%M %p"),
 			"venue_name": details.venue_name,
 			"invitation_url_id": inv.invitation_url_id
 
