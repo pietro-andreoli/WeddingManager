@@ -27,6 +27,7 @@ class InvitationAdmin(admin.ModelAdmin):
 class RSVPAdmin(admin.ModelAdmin):
 	model = RSVP
 	list_display = ("view_rsvp_owner", "is_attending_ceremony", "is_attending", "is_vegan")
+	list_filter = ("is_attending_ceremony", "is_attending", "is_vegan")
 
 	def view_rsvp_owner(self, obj):
 		return Guest.objects.get(rsvp=obj)
