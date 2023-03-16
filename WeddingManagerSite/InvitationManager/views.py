@@ -12,6 +12,7 @@ from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.http.request import HttpRequest
+from django.shortcuts import redirect
 
 from InvitationManager import event_details
 
@@ -290,8 +291,6 @@ class InvitationHomepage(View):
 			invitation
 		)
 
-		now_w_tz = datetime.now().replace(tzinfo=pytz.UTC).astimezone(timezone.get_current_timezone())
-
 		invitation_context = {
 			"wedding_date": "{dt:%B} {dt.day}, {dt.year}".format(dt=details.event_start_timestamp),
 			"wedding_time": "{hr}:{dt:%M} {m} {tz}".format(
@@ -308,7 +307,7 @@ class InvitationHomepage(View):
 			"invitation_url_id": invitation_id,
 			"partner_1": details.partner_1,
 			"partner_2": details.partner_2,
-			"past_rsvp": details.reply_deadline < now_w_tz
+			"past_rsvp": details.reply_deadline < event_details.convert_utc_to_curr_timezone(datetime.now())
 		}
 		return render(request, "InvitationManager/your_invitation.html", context=invitation_context)
 	
@@ -391,6 +390,11 @@ class RSVPFormView(View):
 			"RSVP page GET",
 			inv
 		)
+
+		details = event_details.get_main_config()
+		if (details.reply_deadline < event_details.convert_utc_to_curr_timezone(datetime.now())):
+			return redirect("InvitationManager:invitation_endpoint", invitation_id=invitation_id)
+
 		return self.render_form(request, inv)
 	
 	def post(self, request, invitation_id, *args, **kwargs):
