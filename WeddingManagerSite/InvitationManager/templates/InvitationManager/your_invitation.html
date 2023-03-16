@@ -218,13 +218,17 @@
 	</div>
 	<script>
 		const toRSVPButton = document.getElementById('toRSVPButton');
-		toRSVPButton.addEventListener('click', () => {
-			window.location.href = "{% url 'InvitationManager:rsvp' invitation_url_id %}";
-		});
+		if (toRSVPButton) {
+			toRSVPButton.addEventListener('click', () => {
+				window.location.href = "{% url 'InvitationManager:rsvp' invitation_url_id %}";
+			});
+		}
 		const toEventInfoButton = document.getElementById('toEventInfoButton');
-		toEventInfoButton.addEventListener('click', () => {
-			window.location.href = "{% url 'InvitationManager:info' %}";
-		});
+		if (toEventInfoButton) {
+			toEventInfoButton.addEventListener('click', () => {
+				window.location.href = "{% url 'InvitationManager:info' %}";
+			});
+		}
 	</script>
 </body>
 
