@@ -12,11 +12,14 @@ from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.http.request import HttpRequest
+from django.shortcuts import redirect
 
 from InvitationManager import event_details
 
 from . import models as InvitationModels
 from .forms import ImportGuestsForm, RSVPSubform
+import pytz
+from django.utils import timezone
 
 def get_invitation_by_url_id(url_id) -> InvitationModels.Invitation:
 		"""
@@ -303,7 +306,8 @@ class InvitationHomepage(View):
 			"reply_deadline": "{dt:%B} {dt.day}, {dt.year}".format(dt=details.reply_deadline),
 			"invitation_url_id": invitation_id,
 			"partner_1": details.partner_1,
-			"partner_2": details.partner_2
+			"partner_2": details.partner_2,
+			"past_rsvp": details.reply_deadline < event_details.convert_utc_to_curr_timezone(datetime.now())
 		}
 		return render(request, "InvitationManager/your_invitation.html", context=invitation_context)
 	
@@ -386,6 +390,11 @@ class RSVPFormView(View):
 			"RSVP page GET",
 			inv
 		)
+
+		details = event_details.get_main_config()
+		if (details.reply_deadline < event_details.convert_utc_to_curr_timezone(datetime.now())):
+			return redirect("InvitationManager:invitation_endpoint", invitation_id=invitation_id)
+
 		return self.render_form(request, inv)
 	
 	def post(self, request, invitation_id, *args, **kwargs):

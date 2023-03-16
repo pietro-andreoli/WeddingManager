@@ -197,10 +197,16 @@
 				</p>
 			</div>
 
-
+			{% if past_rsvp %}
+			<div class="fancyText" style="display: flex; justify-content: center; text-decoration: underline;">
+				RSVPs for this event have closed.
+			</div>
+			{% else %}
 			<div class="d-flex flex-column align-items-center submitContainer">
 					<button class="btn btn-light btn-lg toRSVP fancyText toRSVPLink" id="toRSVPButton">RSVP</button>
 			</div>
+			{% endif %}
+
 		</div>
 
 	</div>
